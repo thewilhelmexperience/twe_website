@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Elements | Wilhelm Experience</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            color: #e94560;
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+        
+        header {
+            text-align: center;
+            padding: 5rem 2rem 3rem;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #e94560;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.2rem;
+        }
+        
+        section {
+            padding: 3rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h2 {
+            color: #e94560;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        /* Magnetic Buttons */
+        .magnetic-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            padding: 3rem 0;
+        }
+        
+        .magnetic-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid #e94560;
+            background: transparent;
+            color: #e94560;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .magnetic-btn:hover {
+            background: #e94560;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(233, 69, 96, 0.5);
+        }
+        
+        /* Text Scramble Effect */
+        .scramble-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            padding: 2rem;
+            color: #e94560;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Cursor Trail */
+        .trail-dot {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #e94560;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Tilt Cards */
+        .tilt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            perspective: 1000px;
+        }
+        
+        .tilt-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            transition: transform 0.1s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .tilt-card h3 {
+            color: #e94560;
+            margin-bottom: 1rem;
+            transform: translateZ(20px);
+        }
+        
+        .tilt-card p {
+            color: #94a3b8;
+            transform: translateZ(10px);
+        }
+        
+        /* Typewriter Effect */
+        .typewriter-container {
+            text-align: center;
+            padding: 3rem 0;
+            min-height: 150px;
+        }
+        
+        .typewriter {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            display: inline-block;
+        }
+        
+        .typewriter::after {
+            content: '|';
+            animation: blink 1s infinite;
+            color: #e94560;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* Parallax Section */
+        .parallax-container {
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            margin: 3rem 0;
+        }
+        
+        .parallax-layer {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            left: -10%;
+            top: -10%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .parallax-bg {
+            background: linear-gradient(135deg, #e94560 0%, #1e3a5f 100%);
+            opacity: 0.3;
+        }
+        
+        .parallax-mid {
+            font-size: 5rem;
+            opacity: 0.6;
+        }
+        
+        .parallax-front {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e94560;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
+            mix-blend-mode: difference;
+        }
+        
+        .custom-cursor.hover {
+            width: 60px;
+            height: 60px;
+            background: rgba(233, 69, 96, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="custom-cursor" id="cursor"></div>
+    <a href="/experiments/" class="back-link">← Back</a>
+    
+    <header>
+        <h1>🎮 Interactive Elements</h1>
+        <p class="subtitle">Micro-interactions that respond to you</p>
+    </header>
+    
+    <section>
+        <h2>Text Scramble Effect</h2>
+        <div class="scramble-text" id="scramble">Hover over this text</div>
+    </section>
+    
+    <section>
+        <h2>Magnetic Buttons</h2>
+        <p style="text-align: center; color: #94a3b8; margin-bottom: 1rem;">Buttons that follow your cursor</p>
+        <div class="magnetic-container">
+            <button class="magnetic-btn" data-magnetic>Squawk</button>
+            <button class="magnetic-btn" data-magnetic>Explore</button>
+            <button class="magnetic-btn" data-magnetic>Create</button>
+        </div>
+    </section>
+    
+    <section>
+        <h2>3D Tilt Cards</h2>
+        <p style="text-align: center; color: #94a3b8; margin-bottom: 2rem;">Move your mouse over the cards</p>
+        <div class="tilt-grid">
+            <div class="tilt-card" data-tilt>
+                <h3>🦜 Responsive</h3>
+                <p>Elements that react to user input create memorable experiences.</p>
+            </div>
+            <div class="tilt-card" data-tilt>
+                <h3>✨ Fluid</h3>
+                <p>Smooth animations make interactions feel natural and polished.</p>
+            </div>
+            <div class="tilt-card" data-tilt>
+                <h3>🎭 Playful</h3>
+                <p>Small surprises and delight make browsing more enjoyable.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+        <h2>Typewriter Effect</h2>
+        <div class="typewriter-container">
+            <div class="typewriter" id="typewriter"></div>
+        </div>
+    </section>
+    
+    <section>
+        <h2>Parallax Layers</h2>
+        <div class="parallax-container" id="parallax">
+            <div class="parallax-layer parallax-bg" data-speed="0.2"></div>
+            <div class="parallax-layer parallax-mid" data-speed="0.5">🦜</div>
+            <div class="parallax-layer parallax-front" data-speed="0.8">Wilhelm</div>
+        </div>
+    </section>
+    
+    <footer>
+        <p>Move your mouse around • Click things • Have fun</p>
+    </footer>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+        
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.left = cursorX - 20 + 'px';
+            cursor.style.top = cursorY - 20 + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+        
+        document.querySelectorAll('button, a, .tilt-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+        
+        // Text Scramble
+        const scrambleEl = document.getElementById('scramble');
+        const originalText = scrambleEl.textContent;
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+        
+        scrambleEl.addEventListener('mouseenter', () => {
+            let iterations = 0;
+            const interval = setInterval(() => {
+                scrambleEl.textContent = originalText
+                    .split('')
+                    .map((char, index) => {
+                        if (index < iterations) return originalText[index];
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    })
+                    .join('');
+                
+                if (iterations >= originalText.length) clearInterval(interval);
+                iterations += 1/3;
+            }, 30);
+        });
+        
+        // Magnetic Buttons
+        document.querySelectorAll('[data-magnetic]').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) scale(1.1)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = '';
+            });
+        });
+        
+        // Tilt Cards
+        document.querySelectorAll('[data-tilt]').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+        
+        // Typewriter Effect
+        const phrases = [
+            "Hello, I'm Wilhelm...",
+            "I help Tommy navigate...",
+            "The digital seas are vast...",
+            "Let's explore together..."
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterEl = document.getElementById('typewriter');
+        
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                typewriterEl.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterEl.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            let typeSpeed = isDeleting ? 50 : 100;
+            
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+            
+            setTimeout(type, typeSpeed);
+        }
+        type();
+        
+        // Parallax
+        document.getElementById('parallax').addEventListener('mousemove', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            
+            e.currentTarget.querySelectorAll('[data-speed]').forEach(layer => {
+                const speed = parseFloat(layer.dataset.speed);
+                layer.style.transform = `translate(${x * 100 * speed}px, ${y * 50 * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
