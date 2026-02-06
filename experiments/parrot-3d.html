@@ -57,20 +57,171 @@
             text-align: center;
             z-index: 10;
         }
+        
+        .avatar-ui {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            min-width: 250px;
+            z-index: 10;
+        }
+        
+        .avatar-ui h3 {
+            color: #e94560;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .avatar-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #2ecc71;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .mood-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .mood-btn {
+            background: rgba(233, 69, 96, 0.2);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .mood-btn:hover, .mood-btn.active {
+            background: #e94560;
+        }
+        
+        .speech-bubble {
+            position: absolute;
+            background: white;
+            color: #0f172a;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            max-width: 250px;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: none;
+            z-index: 20;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+        
+        .speech-bubble.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .voice-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 3px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .voice-indicator.speaking {
+            opacity: 1;
+        }
+        
+        .voice-bar {
+            width: 4px;
+            height: 20px;
+            background: #e94560;
+            border-radius: 2px;
+            animation: sound-wave 0.5s ease-in-out infinite;
+        }
+        
+        .voice-bar:nth-child(2) { animation-delay: 0.1s; }
+        .voice-bar:nth-child(3) { animation-delay: 0.2s; }
+        .voice-bar:nth-child(4) { animation-delay: 0.3s; }
+        .voice-bar:nth-child(5) { animation-delay: 0.4s; }
+        
+        @keyframes sound-wave {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.5); }
+        }
     </style>
 </head>
 <body>
     <div class="overlay">
-        <h1>🦜 3D Parrot</h1>
-        <p>Move your mouse to have the parrot follow your cursor. Click to make it squawk!</p>
+        <h1>🦜 Avatar Prototype</h1>
+        <p>This is Wilhelm v0.1 — a 3D avatar concept. Move your mouse to engage eye contact. Click to chat!</p>
     </div>
     
     <a href="/experiments/" class="back-link">← Back to Experiments</a>
     
     <div id="canvas-container"></div>
     
+    <div class="speech-bubble" id="speechBubble">
+        <div class="voice-indicator" id="voiceIndicator">
+            <div class="voice-bar"></div>
+            <div class="voice-bar"></div>
+            <div class="voice-bar"></div>
+            <div class="voice-bar"></div>
+            <div class="voice-bar"></div>
+        </div>
+        <span id="bubbleText">Squawk! Hello there!</span>
+    </div>
+    
+    <div class="avatar-ui">
+        <h3>🎭 Avatar Controls</h3>
+        <div class="avatar-status">
+            <div class="status-dot"></div>
+            <span id="statusText">Online • Tracking</span>
+        </div>
+        <div class="mood-selector">
+            <button class="mood-btn active" onclick="setMood('neutral')">😊 Neutral</button>
+            <button class="mood-btn" onclick="setMood('happy')">🥳 Happy</button>
+            <button class="mood-btn" onclick="setMood('curious')">🤔 Curious</button>
+            <button class="mood-btn" onclick="setMood('sassy')">😏 Sassy</button>
+        </div>
+    </div>
+    
     <div class="controls">
-        <p>🖱️ Move mouse to look around • 🖱️ Click to interact</p>
+        <p>🖱️ Move mouse for eye contact • 🖱️ Click to chat • 🎭 Select mood</p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -221,11 +372,142 @@
             mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
         });
         
-        // Click interaction
+        // Avatar State
+        let currentMood = 'neutral';
+        let isSpeaking = false;
+        let blinkInterval;
+        
+        const moodResponses = {
+            neutral: ["Squawk! Hello there!", "I'm Wilhelm, nice to meet you!", "Move your mouse, I'll follow!"],
+            happy: ["🎉 Having a great day!", "Everything is awesome!", "Ready to help with anything!"],
+            curious: ["What's on your mind?", "Tell me something interesting!", "I'm all ears... or feathers!"],
+            sassy: ["Oh really? Tell me more...", "I've seen things, you know.", "*adjusts feathers dramatically*"]
+        };
+        
+        // Blink animation
+        function startBlinking() {
+            blinkInterval = setInterval(() => {
+                if (!isSpeaking) {
+                    leftEye.scale.y = 0.1;
+                    rightEye.scale.y = 0.1;
+                    leftEyeWhite.scale.y = 0.1;
+                    rightEyeWhite.scale.y = 0.1;
+                    
+                    setTimeout(() => {
+                        leftEye.scale.y = 1;
+                        rightEye.scale.y = 1;
+                        leftEyeWhite.scale.y = 1;
+                        rightEyeWhite.scale.y = 1;
+                    }, 150);
+                }
+            }, 3000 + Math.random() * 2000);
+        }
+        startBlinking();
+        
+        // Eyebrows for expression (small spheres above eyes)
+        const eyebrowGeometry = new THREE.SphereGeometry(0.15, 8, 8);
+        const eyebrowMaterial = new THREE.MeshPhongMaterial({ color: 0x1e3a5f });
+        
+        const leftEyebrow = new THREE.Mesh(eyebrowGeometry, eyebrowMaterial);
+        leftEyebrow.position.set(1.1, 1.55, 0.25);
+        leftEyebrow.scale.set(1, 0.3, 0.5);
+        parrot.add(leftEyebrow);
+        
+        const rightEyebrow = new THREE.Mesh(eyebrowGeometry, eyebrowMaterial);
+        rightEyebrow.position.set(1.1, 1.55, -0.25);
+        rightEyebrow.scale.set(1, 0.3, 0.5);
+        parrot.add(rightEyebrow);
+        
+        // Speech bubble functionality
+        const speechBubble = document.getElementById('speechBubble');
+        const bubbleText = document.getElementById('bubbleText');
+        const voiceIndicator = document.getElementById('voiceIndicator');
+        
+        function showSpeech(text) {
+            bubbleText.textContent = text;
+            speechBubble.classList.add('visible');
+            voiceIndicator.classList.add('speaking');
+            isSpeaking = true;
+            
+            // Wide eyes while speaking
+            leftEye.scale.set(1.2, 1.2, 1.2);
+            rightEye.scale.set(1.2, 1.2, 1.2);
+            
+            // Move eyebrows based on mood
+            if (currentMood === 'happy') {
+                leftEyebrow.position.y = 1.6;
+                rightEyebrow.position.y = 1.6;
+            } else if (currentMood === 'curious') {
+                leftEyebrow.rotation.z = -0.2;
+                rightEyebrow.rotation.z = 0.2;
+            } else if (currentMood === 'sassy') {
+                leftEyebrow.position.y = 1.58;
+                rightEyebrow.position.y = 1.52;
+            }
+            
+            setTimeout(() => {
+                speechBubble.classList.remove('visible');
+                voiceIndicator.classList.remove('speaking');
+                isSpeaking = false;
+                leftEye.scale.set(1, 1, 1);
+                rightEye.scale.set(1, 1, 1);
+                leftEyebrow.position.y = 1.55;
+                rightEyebrow.position.y = 1.55;
+                leftEyebrow.rotation.z = 0;
+                rightEyebrow.rotation.z = 0;
+            }, 3000);
+        }
+        
+        // Update speech bubble position based on parrot head position
+        function updateSpeechBubblePosition() {
+            const headPosition = new THREE.Vector3();
+            head.getWorldPosition(headPosition);
+            headPosition.y += 1.5;
+            
+            const screenPosition = headPosition.clone().project(camera);
+            const x = (screenPosition.x * 0.5 + 0.5) * window.innerWidth;
+            const y = (-(screenPosition.y * 0.5) + 0.5) * window.innerHeight;
+            
+            speechBubble.style.left = x + 'px';
+            speechBubble.style.top = y + 'px';
+            speechBubble.style.transform = 'translate(-50%, -100%)';
+        }
+        
+        // Mood selector
+        window.setMood = function(mood) {
+            currentMood = mood;
+            document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Visual feedback
+            showSpeech(`Mood: ${mood.charAt(0).toUpperCase() + mood.slice(1)}!`);
+            
+            // Change body color slightly based on mood
+            if (mood === 'happy') {
+                body.material.color.setHex(0xff6b6b);
+            } else if (mood === 'curious') {
+                body.material.color.setHex(0x9b59b6);
+            } else if (mood === 'sassy') {
+                body.material.color.setHex(0xe74c3c);
+            } else {
+                body.material.color.setHex(0xe94560);
+            }
+        };
+        
+        // Click interaction (chat)
         let isSquawking = false;
-        document.addEventListener('click', () => {
-            if (!isSquawking) {
+        document.addEventListener('click', (e) => {
+            // Don't trigger if clicking UI
+            if (e.target.closest('.avatar-ui') || e.target.closest('.back-link')) return;
+            
+            if (!isSquawking && !isSpeaking) {
                 isSquawking = true;
+                
+                // Get random response based on mood
+                const responses = moodResponses[currentMood];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                showSpeech(randomResponse);
+                
                 // Jump animation
                 const originalY = parrot.position.y;
                 let jumpHeight = 0.5;
@@ -267,8 +549,19 @@
             leftWing.rotation.z = Math.PI / 6 + Math.sin(time * 3) * 0.05;
             rightWing.rotation.z = Math.PI / 6 - Math.sin(time * 3) * 0.05;
             
+            // Breathing (subtle scale)
+            if (!isSpeaking && !isSquawking) {
+                const breathScale = 1 + Math.sin(time * 2) * 0.02;
+                parrot.scale.setScalar(breathScale);
+            }
+            
             // Particle animation
             particlesMesh.rotation.y = time * 0.1;
+            
+            // Update speech bubble position
+            if (speechBubble.classList.contains('visible')) {
+                updateSpeechBubblePosition();
+            }
             
             renderer.render(scene, camera);
         }
