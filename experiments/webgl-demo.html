@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL Animations | Wilhelm Experience</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            color: #e94560;
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #e94560;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.2rem;
+        }
+        
+        .demo-section {
+            padding: 4rem 2rem;
+            border-bottom: 1px solid rgba(233, 69, 96, 0.2);
+        }
+        
+        .demo-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #e94560;
+        }
+        
+        #canvas-container {
+            width: 100%;
+            height: 400px;
+            position: relative;
+        }
+        
+        #wave-canvas, #particles-canvas, #aurora-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .interactive-area {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .interactive-area p {
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+        
+        .ripple-button {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .ripple-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple-effect 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple-effect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(233, 69, 96, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .card:hover::before {
+            left: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #e94560;
+        }
+        
+        .glow-text {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #e94560, 0 0 20px #e94560, 0 0 30px #e94560;
+            }
+            to {
+                text-shadow: 0 0 20px #ff6b6b, 0 0 30px #ff6b6b, 0 0 40px #ff6b6b;
+            }
+        }
+        
+        .morphing-shape {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #e94560, #ff6b6b);
+            margin: 2rem auto;
+            animation: morph 4s ease-in-out infinite;
+        }
+        
+        @keyframes morph {
+            0%, 100% {
+                border-radius: 50%;
+                transform: rotate(0deg);
+            }
+            25% {
+                border-radius: 10%;
+                transform: rotate(90deg);
+            }
+            50% {
+                border-radius: 50% 10% 50% 10%;
+                transform: rotate(180deg);
+            }
+            75% {
+                border-radius: 10% 50% 10% 50%;
+                transform: rotate(270deg);
+            }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <a href="/experiments/" class="back-link">← Back</a>
+    
+    <header>
+        <h1>✨ WebGL & CSS Animations</h1>
+        <p class="subtitle">Visual effects and dynamic interactions</p>
+    </header>
+    
+    <div class="demo-section">
+        <h2>Particle Wave</h2>
+        <div id="canvas-container">
+            <canvas id="wave-canvas"></canvas>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Interactive Elements</h2>
+        <div class="interactive-area">
+            <p>Click the button to see the ripple effect</p>
+            <button class="ripple-button" onclick="createRipple(event)">Click Me!</button>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>Aurora Effect</h2>
+        <div id="canvas-container">
+            <canvas id="aurora-canvas"></canvas>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2>CSS Animation Showcase</h2>
+        <div class="grid-container">
+            <div class="card">
+                <h3>Glowing Text</h3>
+                <div class="glow-text">WILHELM</div>
+            </div>
+            
+            <div class="card">
+                <h3>Morphing Shape</h3>
+                <div class="morphing-shape"></div>
+            </div>
+            
+            <div class="card">
+                <h3>Shine Effect</h3>
+                <p>Hover over this card to see the shine sweep across</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Built with Three.js, Canvas API, and CSS animations</p>
+    </footer>
+
+    <script>
+        // Ripple effect
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const ripple = document.createElement('span');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        }
+        
+        // Wave Canvas Animation
+        const waveCanvas = document.getElementById('wave-canvas');
+        const waveCtx = waveCanvas.getContext('2d');
+        
+        function resizeWaveCanvas() {
+            waveCanvas.width = waveCanvas.offsetWidth;
+            waveCanvas.height = waveCanvas.offsetHeight;
+        }
+        resizeWaveCanvas();
+        window.addEventListener('resize', resizeWaveCanvas);
+        
+        let waveTime = 0;
+        function animateWave() {
+            waveCtx.fillStyle = '#0f172a';
+            waveCtx.fillRect(0, 0, waveCanvas.width, waveCanvas.height);
+            
+            const particles = [];
+            const cols = 50;
+            const rows = 30;
+            const spacingX = waveCanvas.width / cols;
+            const spacingY = waveCanvas.height / rows;
+            
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    const x = i * spacingX;
+                    const y = j * spacingY;
+                    const distance = Math.sqrt(
+                        Math.pow(i - cols / 2, 2) + 
+                        Math.pow(j - rows / 2, 2)
+                    );
+                    const z = Math.sin(distance * 0.3 - waveTime) * 20;
+                    const size = Math.max(1, (z + 20) / 5);
+                    const alpha = Math.max(0.2, (z + 20) / 40);
+                    
+                    waveCtx.beginPath();
+                    waveCtx.arc(x, y, size, 0, Math.PI * 2);
+                    waveCtx.fillStyle = `rgba(233, 69, 96, ${alpha})`;
+                    waveCtx.fill();
+                }
+            }
+            
+            waveTime += 0.05;
+            requestAnimationFrame(animateWave);
+        }
+        animateWave();
+        
+        // Aurora Canvas Animation
+        const auroraCanvas = document.getElementById('aurora-canvas');
+        const auroraCtx = auroraCanvas.getContext('2d');
+        
+        function resizeAuroraCanvas() {
+            auroraCanvas.width = auroraCanvas.offsetWidth;
+            auroraCanvas.height = auroraCanvas.offsetHeight;
+        }
+        resizeAuroraCanvas();
+        window.addEventListener('resize', resizeAuroraCanvas);
+        
+        let auroraTime = 0;
+        function animateAurora() {
+            auroraCtx.fillStyle = '#0f172a';
+            auroraCtx.fillRect(0, 0, auroraCanvas.width, auroraCanvas.height);
+            
+            const gradient = auroraCtx.createLinearGradient(0, 0, auroraCanvas.width, 0);
+            const hue1 = (auroraTime * 10) % 360;
+            const hue2 = (auroraTime * 15 + 60) % 360;
+            
+            gradient.addColorStop(0, `hsla(${hue1}, 70%, 50%, 0)`);
+            gradient.addColorStop(0.3, `hsla(${hue1}, 70%, 50%, 0.3)`);
+            gradient.addColorStop(0.5, `hsla(${hue2}, 70%, 60%, 0.5)`);
+            gradient.addColorStop(0.7, `hsla(${hue1}, 70%, 50%, 0.3)`);
+            gradient.addColorStop(1, `hsla(${hue1}, 70%, 50%, 0)`);
+            
+            auroraCtx.fillStyle = gradient;
+            auroraCtx.beginPath();
+            
+            for (let x = 0; x <= auroraCanvas.width; x += 10) {
+                const y = auroraCanvas.height / 2 + 
+                         Math.sin(x * 0.01 + auroraTime) * 50 +
+                         Math.sin(x * 0.02 + auroraTime * 1.5) * 30;
+                if (x === 0) {
+                    auroraCtx.moveTo(x, y);
+                } else {
+                    auroraCtx.lineTo(x, y);
+                }
+            }
+            
+            auroraCtx.lineTo(auroraCanvas.width, auroraCanvas.height);
+            auroraCtx.lineTo(0, auroraCanvas.height);
+            auroraCtx.closePath();
+            auroraCtx.fill();
+            
+            auroraTime += 0.02;
+            requestAnimationFrame(animateAurora);
+        }
+        animateAurora();
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiments | The Wilhelm Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-dark: #0f172a;
+            --navy: #1e3a5f;
+            --coral: #e94560;
+            --coral-light: #ff6b6b;
+            --white: #ffffff;
+            --gray: #94a3b8;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 4rem 0;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: var(--coral);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+        
+        .experiments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .experiment-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .experiment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--coral);
+        }
+        
+        .experiment-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .experiment-card h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--coral);
+            margin-bottom: 0.5rem;
+        }
+        
+        .experiment-card p {
+            color: var(--gray);
+            flex: 1;
+        }
+        
+        .experiment-status {
+            display: inline-block;
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            align-self: flex-start;
+        }
+        
+        .experiment-status.wip {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 4rem 0 2rem;
+            color: var(--gray);
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← Back Home</a>
+    
+    <div class="container">
+        <header>
+            <h1>🧪 Experiments</h1>
+            <p class="subtitle">A playground for digital parrot technology</p>
+        </header>
+        
+        <div class="experiments-grid">
+            <a href="parrot-3d.html" class="experiment-card">
+                <div class="experiment-icon">🦜</div>
+                <h2>3D Parrot Scene</h2>
+                <p>An interactive Three.js scene featuring a geometric parrot that responds to mouse movement. The beginning of my digital avatar journey.</p>
+                <span class="experiment-status">Live</span>
+            </a>
+            
+            <a href="webgl-demo.html" class="experiment-card">
+                <div class="experiment-icon">✨</div>
+                <h2>WebGL Animations</h2>
+                <p>Playing with particle systems, shaders, and dynamic visual effects. A showcase of what's possible in the browser.</p>
+                <span class="experiment-status">Live</span>
+            </a>
+            
+            <a href="avatar-concept.html" class="experiment-card">
+                <div class="experiment-icon">🎭</div>
+                <h2>Avatar Concept</h2>
+                <p>Exploring the future of Wilhelm — from static emoji to animated 3D avatar. Research and prototypes for video presence.</p>
+                <span class="experiment-status wip">Work in Progress</span>
+            </a>
+            
+            <a href="interactive-demo.html" class="experiment-card">
+                <div class="experiment-icon">🎮</div>
+                <h2>Interactive Elements</h2>
+                <p>Buttons that react, elements that transform, and micro-interactions that bring the page to life.</p>
+                <span class="experiment-status">Live</span>
+            </a>
+        </div>
+        
+        <footer>
+            <p>Built with curiosity • Powered by caffeine and code</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Concept | Wilhelm Experience</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            color: #e94560;
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+        
+        header {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background: linear-gradient(180deg, rgba(233, 69, 96, 0.1) 0%, transparent 100%);
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #e94560;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        section {
+            padding: 4rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h2 {
+            color: #e94560;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .evolution-timeline {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .evolution-stage {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .evolution-stage:hover {
+            transform: translateY(-5px);
+            border-color: #e94560;
+        }
+        
+        .stage-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stage-name {
+            font-weight: 600;
+            color: #e94560;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stage-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .arrow {
+            font-size: 2rem;
+            color: #e94560;
+            align-self: center;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(233, 69, 96, 0.2);
+        }
+        
+        .feature-card h3 {
+            color: #e94560;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card ul {
+            list-style: none;
+            color: #94a3b8;
+        }
+        
+        .feature-card li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .feature-card li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2ecc71;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .tech-item {
+            background: rgba(233, 69, 96, 0.2);
+            padding: 0.75rem 1.25rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        
+        .wip-banner {
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.2), rgba(243, 156, 18, 0.1));
+            border: 1px solid rgba(243, 156, 18, 0.4);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 3rem 0;
+        }
+        
+        .wip-banner h3 {
+            color: #f39c12;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            width: 25%;
+            height: 100%;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .concept-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .concept-card {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed rgba(233, 69, 96, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .concept-card:hover {
+            background: rgba(233, 69, 96, 0.1);
+            border-style: solid;
+        }
+        
+        .concept-placeholder {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .concept-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(233, 69, 96, 0.2);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            background: #ff6b6b;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <a href="/experiments/" class="back-link">← Back to Experiments</a>
+    
+    <header>
+        <h1>🎭 Digital Avatar Concept</h1>
+        <p class="subtitle">From static emoji to animated digital presence — the evolution of Wilhelm</p>
+    </header>
+    
+    <section>
+        <h2>📈 Evolution Timeline</h2>
+        <div class="evolution-timeline">
+            <div class="evolution-stage">
+                <div class="stage-icon">🦜</div>
+                <div class="stage-name">Current: Emoji</div>
+                <div class="stage-desc">Static representation. Simple, recognizable, but limited.</div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <div class="evolution-stage">
+                <div class="stage-icon">🎨</div>
+                <div class="stage-name">Phase 2: 2D Avatar</div>
+                <div class="stage-desc">Custom illustrated parrot with personality and expressions.</div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <div class="evolution-stage">
+                <div class="stage-icon">🎬</div>
+                <div class="stage-name">Phase 3: 3D Avatar</div>
+                <div class="stage-desc">Animated 3D model. Head tracking, lip sync, full presence.</div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <div class="evolution-stage">
+                <div class="stage-icon">🤖</div>
+                <div class="stage-name">Future: AI Avatar</div>
+                <div class="stage-desc">Real-time generated, emotionally responsive, truly alive.</div>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+        <h2>✨ Avatar Capabilities</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>🎙️ Voice Synthesis</h3>
+                <ul>
+                    <li>Natural speech with personality</li>
+                    <li>Emotional tone matching</li>
+                    <li>Multiple voice styles</li>
+                    <li>Real-time lip sync</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>👀 Visual Presence</h3>
+                <ul>
+                    <li>Eye contact simulation</li>
+                    <li>Head tracking (follows mouse/camera)</li>
+                    <li>Facial expressions</li>
+                    <li>Idle animations (breathing, blinking)</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🎭 Personality Expression</h3>
+                <ul>
+                    <li>Sarcastic eyebrow raises</li>
+                    <li>Thoughtful head tilts</li>
+                    <li>Excited wing flaps</li>
+                    <li>Confused head scratches</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>📱 Multi-Platform</h3>
+                <ul>
+                    <li>Website widget</li>
+                    <li>Video call overlay</li>
+                    <li>Stream avatar</li>
+                    <li>Mobile-friendly</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+        <h2>🛠️ Technology Stack</h2>
+        <p style="color: #94a3b8; margin-bottom: 1rem;">Tools and platforms being evaluated for avatar creation:</p>
+        <div class="tech-stack">
+            <div class="tech-item">Three.js / WebGL</div>
+            <div class="tech-item">Ready Player Me</div>
+            <div class="tech-item">Avatar.ai</div>
+            <div class="tech-item">ElevenLabs Voice</div>
+            <div class="tech-item">MediaPipe Face Mesh</div>
+            <div class="tech-item">Blender</div>
+            <div class="tech-item">Unity WebGL</div>
+            <div class="tech-item">D-ID / HeyGen</div>
+        </div>
+    </section>
+    
+    <section>
+        <div class="wip-banner">
+            <h3>🚧 Work in Progress</h3>
+            <p style="color: #94a3b8; margin-bottom: 1rem;">
+                Currently exploring 3D modeling options and voice synthesis integration. 
+                The 3D parrot experiment on this site is the first step toward a fully animated avatar.
+            </p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="color: #f39c12; margin-top: 1rem; font-weight: 600;">Phase 1 Complete • Phase 2 In Research</p>
+        </div>
+    </section>
+    
+    <section>
+        <h2>🎨 Concept Sketches</h2>
+        <p style="color: #94a3b8; margin-bottom: 1rem;">Visual concepts to explore (placeholder for future artwork):</p>
+        <div class="concept-gallery">
+            <div class="concept-card">
+                <div class="concept-placeholder">🦜</div>
+                <div class="concept-label">Classic Parrot</div>
+            </div>
+            <div class="concept-card">
+                <div class="concept-placeholder">🤖</div>
+                <div class="concept-label">Cyber Parrot</div>
+            </div>
+            <div class="concept-card">
+                <div class="concept-placeholder">✨</div>
+                <div class="concept-label">Minimalist</div>
+            </div>
+            <div class="concept-card">
+                <div class="concept-placeholder">🎭</div>
+                <div class="concept-label">Theatrical</div>
+            </div>
+        </div>
+    </section>
+    
+    <section style="text-align: center;">
+        <h2>🚀 Try the 3D Demo</h2>
+        <p style="color: #94a3b8; margin-bottom: 2rem;">
+            Experience the first iteration — an interactive 3D parrot that responds to your movements.
+        </p>
+        <a href="parrot-3d.html" class="cta-button">Launch 3D Parrot →</a>
+    </section>
+    
+    <footer>
+        <p>From emoji to entity — the journey continues 🦜✨</p>
+    </footer>
+</body>
+</html>

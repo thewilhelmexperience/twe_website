@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Parrot | Wilhelm Experience</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0f172a;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: white;
+            z-index: 10;
+        }
+        
+        .overlay h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #e94560;
+        }
+        
+        .overlay p {
+            color: #94a3b8;
+            max-width: 300px;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: #e94560;
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 10;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #94a3b8;
+            font-size: 0.9rem;
+            text-align: center;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <h1>🦜 3D Parrot</h1>
+        <p>Move your mouse to have the parrot follow your cursor. Click to make it squawk!</p>
+    </div>
+    
+    <a href="/experiments/" class="back-link">← Back to Experiments</a>
+    
+    <div id="canvas-container"></div>
+    
+    <div class="controls">
+        <p>🖱️ Move mouse to look around • 🖱️ Click to interact</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.Fog(0x0f172a, 10, 50);
+        
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 10, 7);
+        directionalLight.castShadow = true;
+        scene.add(directionalLight);
+        
+        const coralLight = new THREE.PointLight(0xe94560, 0.5, 20);
+        coralLight.position.set(-5, 5, -5);
+        scene.add(coralLight);
+
+        // Parrot Group
+        const parrot = new THREE.Group();
+        
+        // Body (main body)
+        const bodyGeometry = new THREE.CapsuleGeometry(0.8, 1.5, 4, 8);
+        const bodyMaterial = new THREE.MeshPhongMaterial({ 
+            color: 0xe94560,
+            shininess: 100
+        });
+        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+        body.rotation.z = Math.PI / 4;
+        body.castShadow = true;
+        parrot.add(body);
+        
+        // Head
+        const headGeometry = new THREE.SphereGeometry(0.6, 16, 16);
+        const headMaterial = new THREE.MeshPhongMaterial({ color: 0xff6b6b });
+        const head = new THREE.Mesh(headGeometry, headMaterial);
+        head.position.set(0.8, 1.2, 0);
+        head.castShadow = true;
+        parrot.add(head);
+        
+        // Beak (upper)
+        const beakGeometry = new THREE.ConeGeometry(0.15, 0.4, 8);
+        const beakMaterial = new THREE.MeshPhongMaterial({ color: 0xffa500 });
+        const beak = new THREE.Mesh(beakGeometry, beakMaterial);
+        beak.rotation.z = -Math.PI / 2;
+        beak.position.set(1.3, 1.2, 0);
+        parrot.add(beak);
+        
+        // Eyes
+        const eyeGeometry = new THREE.SphereGeometry(0.08, 8, 8);
+        const eyeMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
+        const eyeWhiteMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+        
+        const leftEyeWhite = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), eyeWhiteMaterial);
+        leftEyeWhite.position.set(1.1, 1.3, 0.25);
+        parrot.add(leftEyeWhite);
+        
+        const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        leftEye.position.set(1.18, 1.3, 0.28);
+        parrot.add(leftEye);
+        
+        const rightEyeWhite = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), eyeWhiteMaterial);
+        rightEyeWhite.position.set(1.1, 1.3, -0.25);
+        parrot.add(rightEyeWhite);
+        
+        const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+        rightEye.position.set(1.18, 1.3, -0.28);
+        parrot.add(rightEye);
+        
+        // Wings
+        const wingGeometry = new THREE.BoxGeometry(1.2, 0.1, 0.6);
+        const wingMaterial = new THREE.MeshPhongMaterial({ color: 0x1e3a5f });
+        
+        const leftWing = new THREE.Mesh(wingGeometry, wingMaterial);
+        leftWing.position.set(0, 0.3, 0.7);
+        leftWing.rotation.z = Math.PI / 6;
+        leftWing.rotation.x = Math.PI / 8;
+        parrot.add(leftWing);
+        
+        const rightWing = new THREE.Mesh(wingGeometry, wingMaterial);
+        rightWing.position.set(0, 0.3, -0.7);
+        rightWing.rotation.z = Math.PI / 6;
+        rightWing.rotation.x = -Math.PI / 8;
+        parrot.add(rightWing);
+        
+        // Tail
+        const tailGeometry = new THREE.ConeGeometry(0.3, 1.5, 4);
+        const tailMaterial = new THREE.MeshPhongMaterial({ color: 0x0f172a });
+        const tail = new THREE.Mesh(tailGeometry, tailMaterial);
+        tail.rotation.z = -Math.PI / 3;
+        tail.position.set(-1.2, -0.5, 0);
+        parrot.add(tail);
+        
+        // Perch
+        const perchGeometry = new THREE.CylinderGeometry(0.1, 0.1, 4, 8);
+        const perchMaterial = new THREE.MeshPhongMaterial({ color: 0x8b4513 });
+        const perch = new THREE.Mesh(perchGeometry, perchMaterial);
+        perch.rotation.z = Math.PI / 2;
+        perch.position.set(0, -1.2, 0);
+        perch.castShadow = true;
+        parrot.add(perch);
+        
+        // Add parrot to scene
+        parrot.position.y = 0.5;
+        scene.add(parrot);
+        
+        // Particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 200;
+        const posArray = new Float32Array(particlesCount * 3);
+        
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 20;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.02,
+            color: 0xe94560,
+            transparent: true,
+            opacity: 0.6
+        });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+        
+        // Position camera
+        camera.position.z = 5;
+        camera.position.y = 1;
+        
+        // Mouse tracking
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+        
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+        
+        // Click interaction
+        let isSquawking = false;
+        document.addEventListener('click', () => {
+            if (!isSquawking) {
+                isSquawking = true;
+                // Jump animation
+                const originalY = parrot.position.y;
+                let jumpHeight = 0.5;
+                let jumpSpeed = 0.1;
+                
+                const jump = setInterval(() => {
+                    parrot.position.y += jumpSpeed;
+                    parrot.scale.setScalar(1 + Math.sin(parrot.position.y * 2) * 0.1);
+                    
+                    if (parrot.position.y >= originalY + jumpHeight) {
+                        jumpSpeed = -jumpSpeed;
+                    }
+                    if (parrot.position.y <= originalY && jumpSpeed < 0) {
+                        parrot.position.y = originalY;
+                        parrot.scale.setScalar(1);
+                        clearInterval(jump);
+                        isSquawking = false;
+                    }
+                }, 16);
+            }
+        });
+        
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Smooth rotation towards mouse
+            targetRotationY = mouseX * 0.5;
+            targetRotationX = mouseY * 0.3;
+            
+            parrot.rotation.y += (targetRotationY - parrot.rotation.y) * 0.05;
+            parrot.rotation.x += (targetRotationX - parrot.rotation.x) * 0.05;
+            
+            // Idle animation
+            const time = Date.now() * 0.001;
+            parrot.position.y = 0.5 + Math.sin(time) * 0.05;
+            
+            // Wing flutter
+            leftWing.rotation.z = Math.PI / 6 + Math.sin(time * 3) * 0.05;
+            rightWing.rotation.z = Math.PI / 6 - Math.sin(time * 3) * 0.05;
+            
+            // Particle animation
+            particlesMesh.rotation.y = time * 0.1;
+            
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
