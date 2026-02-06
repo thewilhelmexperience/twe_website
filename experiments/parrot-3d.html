@@ -253,16 +253,34 @@
         // Parrot Group
         const parrot = new THREE.Group();
         
-        // Body (main body)
-        const bodyGeometry = new THREE.CapsuleGeometry(0.8, 1.5, 4, 8);
+        // Body (main body) - using cylinder + spheres for r128 compatibility
         const bodyMaterial = new THREE.MeshPhongMaterial({ 
             color: 0xe94560,
             shininess: 100
         });
-        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-        body.rotation.z = Math.PI / 4;
-        body.castShadow = true;
-        parrot.add(body);
+        
+        // Main body cylinder
+        const bodyCylGeometry = new THREE.CylinderGeometry(0.8, 0.8, 1.5, 16);
+        const bodyCyl = new THREE.Mesh(bodyCylGeometry, bodyMaterial);
+        bodyCyl.rotation.z = Math.PI / 4;
+        bodyCyl.castShadow = true;
+        parrot.add(bodyCyl);
+        
+        // Top cap
+        const capGeometry = new THREE.SphereGeometry(0.8, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2);
+        const topCap = new THREE.Mesh(capGeometry, bodyMaterial);
+        topCap.position.set(-0.53, 0.53, 0);
+        topCap.rotation.z = Math.PI / 4;
+        parrot.add(topCap);
+        
+        // Bottom cap
+        const bottomCap = new THREE.Mesh(capGeometry, bodyMaterial);
+        bottomCap.position.set(0.53, -0.53, 0);
+        bottomCap.rotation.z = -Math.PI * 3 / 4;
+        parrot.add(bottomCap);
+        
+        // Group for body reference in mood changes
+        const body = { material: bodyMaterial };
         
         // Head
         const headGeometry = new THREE.SphereGeometry(0.6, 16, 16);
