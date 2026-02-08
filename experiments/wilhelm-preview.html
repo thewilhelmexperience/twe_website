@@ -360,11 +360,14 @@
             },
             function(xhr) {
                 const percent = Math.round((xhr.loaded / xhr.total) * 100);
-                statusEl.textContent = `Loading... ${percent}%`;
+                const loadedMB = (xhr.loaded / 1024 / 1024).toFixed(1);
+                const totalMB = (xhr.total / 1024 / 1024).toFixed(1);
+                statusEl.textContent = `Loading... ${percent}% (${loadedMB}/${totalMB} MB)`;
             },
             function(error) {
                 console.error('Error loading Wilhelm:', error);
-                statusEl.textContent = '❌ Error loading (using fallback)';
+                statusEl.textContent = '❌ Error loading model. Try refreshing or check console.';
+                statusEl.style.background = 'rgba(231, 76, 60, 0.3)';
             }
         );
         
