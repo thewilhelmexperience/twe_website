@@ -94,8 +94,8 @@
 </head>
 <body>
     <div class="overlay">
-        <h1>🦜 Wilhelm Preview</h1>
-        <p>New $15 parrot model loaded! This is the base model before customization.</p>
+        <h1>🦜 Wilhelm v1</h1>
+        <p>Customized parrot with coral brand colors (#e94560). Your digital avatar!</p>
         <div class="status" id="status">Loading model...</div>
     </div>
     
@@ -172,12 +172,12 @@
         ground.receiveShadow = true;
         scene.add(ground);
         
-        // Load the parrot model
+        // Load the Wilhelm model
         const loader = new THREE.GLTFLoader();
         const statusEl = document.getElementById('status');
         
         loader.load(
-            'models/wilhelm/Parrot.glb',
+            'models/wilhelm/Wilhelm-v1.glb',
             function(gltf) {
                 const parrot = gltf.scene;
                 
