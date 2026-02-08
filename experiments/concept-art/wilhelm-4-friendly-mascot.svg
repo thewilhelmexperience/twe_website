@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <!-- Background -->
+  <rect width="400" height="400" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="200" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
+    4. FRIENDLY MASCOT
+  </text>
+  
+  <!-- Parrot Body -->
+  <ellipse cx="200" cy="220" rx="70" ry="85" fill="#fff5eb"/>
+  
+  <!-- Wings (coral - one waving) -->
+  <path d="M130 180 Q110 220 135 260" fill="#e94560" opacity="0.9"/>
+  <path d="M270 180 Q290 220 265 260" fill="#e94560" opacity="0.9"/>
+  
+  <!-- Waving Wing (raised) -->
+  <ellipse cx="290" cy="150" rx="30" ry="20" fill="#e94560" transform="rotate(-30 290 150)"/>
+  
+  <!-- Tail (coral, friendly spread) -->
+  <path d="M160 295 L185 350 L200 320 L215 350 L240 295" fill="#e94560"/>
+  
+  <!-- Crest feathers (coral, perked up friendly) -->
+  <path d="M175 135 Q160 100 180 120" fill="#e94560"/>
+  <path d="M200 130 Q200 85 200 110" fill="#e94560"/>
+  <path d="M225 135 Q240 100 220 120" fill="#e94560"/>
+  
+  <!-- Head -->
+  <circle cx="200" cy="170" r="50" fill="#fff5eb"/>
+  
+  <!-- Beak (slight smile) -->
+  <path d="M185 175 Q200 195 215 175 L200 185 Z" fill="#ffa500"/>
+  
+  <!-- Eyes (bright, welcoming) -->
+  <ellipse cx="180" cy="165" rx="12" ry="15" fill="white"/>
+  <circle cx="182" cy="165" r="7" fill="#333"/>
+  <circle cx="184" cy="163" r="3" fill="white"/>
+  
+  <ellipse cx="220" cy="165" rx="12" ry="15" fill="white"/>
+  <circle cx="218" cy="165" r="7" fill="#333"/>
+  <circle cx="220" cy="163" r="3" fill="white"/>
+  
+  <!-- Eyebrow (friendly raised) -->
+  <path d="M170 150 Q180 145 190 150" stroke="#333" stroke-width="2" fill="none"/>
+  <path d="M210 150 Q220 145 230 150" stroke="#333" stroke-width="2" fill="none"/>
+  
+  <!-- Cheerful smile -->
+  <path d="M185 195 Q200 205 215 195" stroke="#333" stroke-width="2" fill="none"/>
+  <path d="M198 200 Q200 202 202 200" stroke="#333" stroke-width="1" fill="none"/>
+  
+  <!-- Rosy cheeks (cute factor) -->
+  <ellipse cx="160" cy="185" rx="8" ry="5" fill="#e94560" opacity="0.3"/>
+  <ellipse cx="240" cy="185" rx="8" ry="5" fill="#e94560" opacity="0.3"/>
+  
+  <!-- Welcome gesture lines -->
+  <path d="M320 120 Q340 100 350 80" stroke="#e94560" stroke-width="2" fill="none" opacity="0.5"/>
+  <path d="M330 140 Q355 125 365 110" stroke="#e94560" stroke-width="2" fill="none" opacity="0.5"/>
+  
+  <!-- Friendly sparkles -->
+  <text x="340" y="200" font-size="20" fill="#e94560" opacity="0.6">✦</text>
+  <text x="70" y="150" font-size="15" fill="#e94560" opacity="0.6">✦</text>
+  <text x="50" y="280" font-size="18" fill="#e94560" opacity="0.6">✦</text>
+  
+  <!-- Color swatches -->
+  <rect x="20" y="360" width="20" height="20" fill="#fff5eb" stroke="#333"/>
+  <rect x="50" y="360" width="20" height="20" fill="#e94560" stroke="#333"/>
+  <text x="80" y="375" font-size="10" fill="#333">Warm &amp; Friendly</text>
+</svg>
