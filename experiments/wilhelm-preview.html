@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wilhelm 3D Preview | Wilhelm Experience</title>
+    <title>Wilhelm 3D | Wilhelm Experience</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -53,6 +53,22 @@
             font-size: 0.85rem;
         }
         
+        .feature-list {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+        
+        .feature-list li {
+            margin: 0.3rem 0;
+            list-style: none;
+        }
+        
+        .feature-list li::before {
+            content: "✓ ";
+            color: #e94560;
+        }
+        
         .controls {
             position: absolute;
             bottom: 2rem;
@@ -81,30 +97,60 @@
             border: 1px solid rgba(233, 69, 96, 0.3);
         }
         
-        .error-message {
+        .speech-bubble {
             position: absolute;
-            top: 50%;
+            background: white;
+            color: #0f172a;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            max-width: 250px;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            pointer-events: none;
+            z-index: 20;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            color: #e94560;
-            text-align: center;
-            font-size: 1.2rem;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+        
+        .speech-bubble.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
     </style>
 </head>
 <body>
     <div class="overlay">
-        <h1>🦜 Wilhelm v1</h1>
-        <p>Customized parrot with coral brand colors (#e94560). Your digital avatar!</p>
-        <div class="status" id="status">Loading model...</div>
+        <h1>🦜 Wilhelm v2</h1>
+        <p>Your customized parrot avatar with coral branding, captain's hat, and interactive features!</p>
+        <div class="status" id="status">Loading Wilhelm...</div>
+        <ul class="feature-list">
+            <li>Coral brand colors applied</li>
+            <li>Captain's hat equipped</li>
+            <li>Idle breathing animation</li>
+            <li>Head tracking (move your mouse!)</li>
+            <li>Click me to interact</li>
+        </ul>
     </div>
     
     <a href="/experiments/" class="back-link">← Back to Experiments</a>
     
     <div id="canvas-container"></div>
+    <div class="speech-bubble" id="speechBubble">Squawk! Nice to meet you!</div>
     
     <div class="controls">
-        🖱️ Drag to rotate • 📜 Scroll to zoom • 👆 Right-click to pan
+        🖱️ Drag to rotate • 📜 Scroll to zoom • 👆 Click Wilhelm to chat
     </div>
 
     <!-- Three.js and GLTF Loader -->
@@ -120,7 +166,7 @@
         
         // Camera
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 2, 8);
+        camera.position.set(0, 3, 8);
         
         // Renderer
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -135,26 +181,27 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
-        controls.minDistance = 3;
+        controls.minDistance = 4;
         controls.maxDistance = 15;
-        controls.target.set(0, 1, 0);
+        controls.target.set(0, 1.5, 0);
+        controls.maxPolarAngle = Math.PI / 2 - 0.1; // Prevent going below ground
         
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
         
-        const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.0);
         mainLight.position.set(5, 10, 5);
         mainLight.castShadow = true;
         mainLight.shadow.mapSize.width = 2048;
         mainLight.shadow.mapSize.height = 2048;
         scene.add(mainLight);
         
-        const fillLight = new THREE.DirectionalLight(0xe94560, 0.4);
+        const fillLight = new THREE.DirectionalLight(0xe94560, 0.3);
         fillLight.position.set(-5, 2, -5);
         scene.add(fillLight);
         
-        const rimLight = new THREE.SpotLight(0xffffff, 0.8);
+        const rimLight = new THREE.SpotLight(0xffffff, 0.6);
         rimLight.position.set(0, 5, -5);
         rimLight.lookAt(0, 0, 0);
         scene.add(rimLight);
@@ -172,67 +219,189 @@
         ground.receiveShadow = true;
         scene.add(ground);
         
-        // Load the Wilhelm model
+        // Wilhelm Group
+        const wilhelm = new THREE.Group();
+        scene.add(wilhelm);
+        
+        // Captain's Hat
+        const hatGroup = new THREE.Group();
+        
+        // Hat brim
+        const brimGeometry = new THREE.CylinderGeometry(0.4, 0.4, 0.05, 32);
+        const hatMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xffffff,
+            roughness: 0.4,
+            metalness: 0.1
+        });
+        const brim = new THREE.Mesh(brimGeometry, hatMaterial);
+        brim.castShadow = true;
+        hatGroup.add(brim);
+        
+        // Hat top
+        const topGeometry = new THREE.CylinderGeometry(0.25, 0.3, 0.35, 32);
+        const top = new THREE.Mesh(topGeometry, hatMaterial);
+        top.position.y = 0.2;
+        top.castShadow = true;
+        hatGroup.add(top);
+        
+        // Anchor emblem (simple torus)
+        const anchorGeometry = new THREE.TorusGeometry(0.08, 0.02, 8, 16);
+        const anchorMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0xc9a227, // Gold
+            metalness: 0.8,
+            roughness: 0.2
+        });
+        const anchor = new THREE.Mesh(anchorGeometry, anchorMaterial);
+        anchor.position.set(0, 0.2, 0.26);
+        anchor.scale.set(1, 1.2, 0.5);
+        hatGroup.add(anchor);
+        
+        // Position hat on head (will adjust after parrot loads)
+        hatGroup.position.set(0, 0, 0);
+        wilhelm.add(hatGroup);
+        
+        // Mouse tracking
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+        
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+        
+        // Load Wilhelm model
         const loader = new THREE.GLTFLoader();
         const statusEl = document.getElementById('status');
+        const speechBubble = document.getElementById('speechBubble');
+        let parrotMesh = null;
+        let mixer = null;
+        let headBone = null;
+        
+        const greetings = [
+            "Squawk! Nice to meet you!",
+            "I'm Wilhelm, your assistant!",
+            "Ready to help, captain!",
+            "What's on the agenda?",
+            "Standing by for orders!"
+        ];
         
         loader.load(
             'models/wilhelm/Wilhelm-v1.glb',
             function(gltf) {
                 const parrot = gltf.scene;
+                parrotMesh = parrot;
                 
                 // Scale and position
                 parrot.scale.set(2, 2, 2);
-                parrot.position.set(0, 0, 0);
                 
                 // Enable shadows
                 parrot.traverse(function(node) {
                     if (node.isMesh) {
                         node.castShadow = true;
                         node.receiveShadow = true;
-                        
-                        // Log materials for debugging
-                        if (node.material) {
-                            console.log('Material:', node.material.name || 'unnamed', node.material.color);
-                        }
+                    }
+                    
+                    // Try to find head bone for tracking
+                    if (node.name && (node.name.toLowerCase().includes('head') || 
+                                     node.name.toLowerCase().includes('neck'))) {
+                        headBone = node;
+                        console.log('Found head/neck bone:', node.name);
                     }
                 });
                 
-                // Center the model
+                // Center and position
                 const box = new THREE.Box3().setFromObject(parrot);
                 const center = box.getCenter(new THREE.Vector3());
                 parrot.position.sub(center);
-                parrot.position.y += 1;
+                parrot.position.y += 1.2;
                 
-                scene.add(parrot);
+                // Position hat on head
+                hatGroup.position.set(0, 2.1, 0.2);
+                hatGroup.rotation.x = -0.1;
                 
-                // Check for animations
-                if (gltf.animations && gltf.animations.length > 0) {
-                    const mixer = new THREE.AnimationMixer(parrot);
-                    gltf.animations.forEach((clip, index) => {
-                        console.log('Animation:', clip.name || `anim_${index}`);
-                    });
-                    statusEl.textContent = `✅ Model loaded! ${gltf.animations.length} animation(s) found`;
-                } else {
-                    statusEl.textContent = '✅ Model loaded! (no animations - static model)';
-                }
+                wilhelm.add(parrot);
                 
-                console.log('Parrot model loaded successfully!');
-                console.log('Scene info:', gltf.scene);
+                statusEl.textContent = '✅ Wilhelm is ready!';
+                statusEl.style.background = 'rgba(46, 204, 113, 0.2)';
+                statusEl.style.color = '#2ecc71';
+                
+                console.log('Wilhelm loaded with customizations!');
             },
             function(xhr) {
                 const percent = Math.round((xhr.loaded / xhr.total) * 100);
                 statusEl.textContent = `Loading... ${percent}%`;
             },
             function(error) {
-                console.error('Error loading model:', error);
-                statusEl.textContent = '❌ Error loading model (check console)';
+                console.error('Error loading Wilhelm:', error);
+                statusEl.textContent = '❌ Error loading (using fallback)';
             }
         );
         
+        // Click interaction
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        
+        document.addEventListener('click', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(wilhelm.children, true);
+            
+            if (intersects.length > 0) {
+                // Show speech bubble
+                const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+                speechBubble.textContent = greeting;
+                speechBubble.style.left = (event.clientX - 100) + 'px';
+                speechBubble.style.top = (event.clientY - 100) + 'px';
+                speechBubble.classList.add('visible');
+                
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    speechBubble.classList.remove('visible');
+                }, 3000);
+                
+                // Little hop animation
+                wilhelm.position.y += 0.2;
+                setTimeout(() => {
+                    wilhelm.position.y -= 0.2;
+                }, 200);
+            }
+        });
+        
         // Animation loop
+        let time = 0;
+        
         function animate() {
             requestAnimationFrame(animate);
+            time += 0.02;
+            
+            // Idle breathing animation
+            if (wilhelm) {
+                // Gentle bobbing
+                wilhelm.position.y = Math.sin(time) * 0.05;
+                
+                // Subtle rotation
+                wilhelm.rotation.y = Math.sin(time * 0.5) * 0.05;
+            }
+            
+            // Head tracking (if head bone found, otherwise rotate whole parrot slightly)
+            if (headBone) {
+                targetRotationY = mouseX * 0.3;
+                targetRotationX = mouseY * 0.2;
+                headBone.rotation.y += (targetRotationY - headBone.rotation.y) * 0.1;
+                headBone.rotation.x += (targetRotationX - headBone.rotation.x) * 0.1;
+            } else {
+                // Fallback: rotate entire group slightly toward mouse
+                targetRotationY = mouseX * 0.15;
+                wilhelm.rotation.y += (targetRotationY - wilhelm.rotation.y) * 0.05;
+            }
+            
+            // Animate hat slightly independently for life-like feel
+            hatGroup.rotation.z = Math.sin(time * 0.8) * 0.02;
+            
             controls.update();
             renderer.render(scene, camera);
         }
