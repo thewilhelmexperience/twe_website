@@ -81,6 +81,34 @@
             background: rgba(15, 23, 42, 0.8);
             padding: 1rem 2rem;
             border-radius: 50px;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .talk-btn {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .talk-btn:hover {
+            background: #ff6b6b;
+            transform: scale(1.05);
+        }
+        
+        .talk-btn.talking {
+            animation: pulse 0.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
         
         .back-link {
@@ -150,7 +178,8 @@
     <div class="speech-bubble" id="speechBubble">Squawk! Nice to meet you!</div>
     
     <div class="controls">
-        🖱️ Drag to rotate • 📜 Scroll to zoom • 👆 Click Wilhelm to chat
+        <span>🖱️ Drag to rotate • 📜 Scroll to zoom • 👆 Click Wilhelm</span>
+        <button class="talk-btn" id="talkBtn" onclick="triggerTalk()">🗣️ Talk</button>
     </div>
 
     <!-- Three.js and GLTF Loader -->
@@ -371,6 +400,41 @@
             }
         });
         
+        // Talk animation
+        let isTalking = false;
+        let talkTime = 0;
+        
+        function triggerTalk() {
+            isTalking = !isTalking;
+            const btn = document.getElementById('talkBtn');
+            
+            if (isTalking) {
+                btn.textContent = '🛑 Stop';
+                btn.classList.add('talking');
+                statusEl.textContent = '🗣️ Wilhelm is talking...';
+                statusEl.style.background = 'rgba(233, 69, 96, 0.3)';
+                
+                // Show speech bubble
+                const phrases = [
+                    "Squawk! How can I help?",
+                    "Aye aye, captain!",
+                    "Ready for duty!",
+                    "Got a question?"
+                ];
+                speechBubble.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+                speechBubble.style.left = '50%';
+                speechBubble.style.top = '30%';
+                speechBubble.style.transform = 'translateX(-50%)';
+                speechBubble.classList.add('visible');
+            } else {
+                btn.textContent = '🗣️ Talk';
+                btn.classList.remove('talking');
+                statusEl.textContent = '✅ Wilhelm is ready!';
+                statusEl.style.background = 'rgba(46, 204, 113, 0.2)';
+                speechBubble.classList.remove('visible');
+            }
+        }
+        
         // Animation loop
         let time = 0;
         
@@ -401,6 +465,21 @@
             
             // Animate hat slightly independently for life-like feel
             hatGroup.rotation.z = Math.sin(time * 0.8) * 0.02;
+            
+            // Talk animation - head bob and wing flap
+            if (isTalking) {
+                talkTime += 0.1;
+                // More vigorous head movement when talking
+                wilhelm.rotation.z = Math.sin(talkTime * 2) * 0.1;
+                // Wing flap simulation (rotate entire body slightly)
+                wilhelm.rotation.x = Math.abs(Math.sin(talkTime * 3)) * 0.15;
+                // Beak area bob (move up and down)
+                wilhelm.position.y += Math.sin(talkTime * 5) * 0.02;
+            } else {
+                // Reset from talk animation
+                wilhelm.rotation.z *= 0.9;
+                wilhelm.rotation.x *= 0.9;
+            }
             
             controls.update();
             renderer.render(scene, camera);
