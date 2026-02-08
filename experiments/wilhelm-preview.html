@@ -187,7 +187,29 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     
+    <div id="errorDisplay" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(231, 76, 60, 0.9); color: white; padding: 2rem; border-radius: 16px; display: none; z-index: 1000; max-width: 80%; font-family: monospace;"></div>
+    
     <script>
+        // Error display
+        const errorDisplay = document.getElementById('errorDisplay');
+        window.onerror = function(msg, url, line, col, error) {
+            errorDisplay.style.display = 'block';
+            errorDisplay.innerHTML = `<strong>JavaScript Error:</strong><br>${msg}<br>Line: ${line}<br><br>Check console for details.`;
+            document.getElementById('status').textContent = '❌ JS Error - Check console';
+            return false;
+        };
+    </script>
+    
+    <script>
+        console.log('Starting Wilhelm initialization...');
+        
+        // Check Three.js loaded
+        if (typeof THREE === 'undefined') {
+            document.getElementById('status').textContent = '❌ Three.js not loaded';
+            throw new Error('Three.js not loaded');
+        }
+        console.log('Three.js loaded:', THREE.REVISION);
+        
         // Scene setup
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0f172a);
@@ -315,6 +337,8 @@
             "What's on the agenda?",
             "Standing by for orders!"
         ];
+        
+        console.log('Loading model from: models/wilhelm/Wilhelm-v1.glb');
         
         loader.load(
             'models/wilhelm/Wilhelm-v1.glb',
