@@ -764,6 +764,92 @@
             margin-top: 1rem;
         }
 
+        .signal-console {
+            border-radius: 28px;
+            padding: 1.5rem;
+            border: 1px solid var(--line);
+            background:
+                linear-gradient(145deg, rgba(95, 227, 255, 0.08), rgba(255, 227, 111, 0.05)),
+                var(--panel);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .signal-map {
+            min-height: 16rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 22px;
+            border: 1px solid rgba(129, 255, 217, 0.13);
+            background:
+                linear-gradient(rgba(129, 255, 217, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(129, 255, 217, 0.06) 1px, transparent 1px),
+                radial-gradient(circle at 32% 38%, rgba(95, 227, 255, 0.18), transparent 18%),
+                rgba(0, 0, 0, 0.16);
+            background-size: 28px 28px, 28px 28px, auto, auto;
+            padding: 1rem;
+        }
+
+        .signal-node {
+            position: absolute;
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 50%;
+            background: var(--alert);
+            box-shadow: 0 0 0 0 rgba(255, 227, 111, 0.4);
+            animation: signal-pulse 2.4s ease-in-out infinite;
+        }
+
+        .signal-node:nth-child(1) {
+            left: 18%;
+            top: 24%;
+        }
+
+        .signal-node:nth-child(2) {
+            left: 66%;
+            top: 34%;
+            animation-delay: 0.45s;
+        }
+
+        .signal-node:nth-child(3) {
+            left: 46%;
+            top: 68%;
+            animation-delay: 0.9s;
+        }
+
+        .signal-readout {
+            position: relative;
+            z-index: 1;
+            max-width: 24rem;
+            border-radius: 18px;
+            border: 1px solid rgba(95, 227, 255, 0.2);
+            background: rgba(3, 9, 13, 0.78);
+            padding: 1rem;
+        }
+
+        .signal-readout p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .signal-readout p + p {
+            margin-top: 0.7rem;
+        }
+
+        @keyframes signal-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 227, 111, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 1.4rem rgba(255, 227, 111, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 227, 111, 0);
+            }
+        }
+
         .wire-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -882,6 +968,7 @@
                 <a href="#passage-builder">Passage Builder</a>
                 <a href="#readiness-board">Readiness Board</a>
                 <a href="#dispatch-tube">Dispatch Tube</a>
+                <a href="#signal-console">Signal Console</a>
                 <a href="#dispatch-wire">Wire</a>
                 <a href="#future">Future Lanes</a>
             </nav>
@@ -1347,6 +1434,68 @@
             </div>
         </section>
 
+        <section class="section" id="signal-console">
+            <div class="section-head">
+                <h2>Signal Cartography Console</h2>
+                <p>A static readout for turning public-safe movement patterns into a weird little bureau bulletin.</p>
+            </div>
+
+            <div class="signal-console">
+                <div class="generator-label">Signal Cartography Desk / Pattern Read</div>
+                <h2>Chart A Signal Oddity</h2>
+                <div class="passage-grid">
+                    <article class="passage-form">
+                        <p>Pick a signal source, pattern, and confidence posture. The desk returns a bulletin that sounds like a field note, not a claim of secret knowledge.</p>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="signal-source">Signal source</label>
+                                <select id="signal-source">
+                                    <option value="ais">AIS marina drift</option>
+                                    <option value="weather">Weather-window behavior</option>
+                                    <option value="air">Aircraft loiter pattern</option>
+                                    <option value="dock">Dock rumor pressure</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="signal-pattern">Pattern shape</label>
+                                <select id="signal-pattern">
+                                    <option value="cluster">Cluster forming</option>
+                                    <option value="silence">Sudden silence</option>
+                                    <option value="repeat">Repeat anomaly</option>
+                                    <option value="surge">Small surge</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="signal-confidence">Confidence</label>
+                                <select id="signal-confidence">
+                                    <option value="low">Low but interesting</option>
+                                    <option value="medium">Medium and worth watching</option>
+                                    <option value="high">High enough to file</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="route-actions">
+                            <button class="button primary" id="signal-button" type="button">Read Signal</button>
+                            <button class="button" id="signal-copy-button" type="button">Copy Bulletin</button>
+                        </div>
+                        <div class="copy-status" id="signal-copy-status" aria-live="polite"></div>
+                    </article>
+
+                    <article class="signal-map" aria-live="polite">
+                        <span class="signal-node"></span>
+                        <span class="signal-node"></span>
+                        <span class="signal-node"></span>
+                        <div class="signal-readout">
+                            <p><span class="label">Bulletin:</span> <span id="signal-title">SIG-TWE-PREVIEW</span></p>
+                            <p><span class="label">Read:</span> <span id="signal-read">AIS marina drift is forming a cluster. The desk says this is low but interesting: watch the pattern, do not crown it prophecy.</span></p>
+                            <p><span class="label">Next scan:</span> <span id="signal-next">Check one adjacent public signal before turning the observation into a dispatch.</span></p>
+                            <p><span class="label">Rule:</span> <span id="signal-rule">Public-safe observation only. No private tracking, no live routing, no secret claims.</span></p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
         <section class="section dispatch-wire" id="dispatch-wire">
             <div class="section-head">
                 <h2>Dispatch Wire</h2>
@@ -1590,6 +1739,38 @@
             checklist: "checklist",
             wire: "wire",
             prototype: "prototype"
+        };
+
+        const signalSources = {
+            ais: "AIS marina drift",
+            weather: "Weather-window behavior",
+            air: "Aircraft loiter pattern",
+            dock: "Dock rumor pressure"
+        };
+
+        const signalPatterns = {
+            cluster: {
+                read: "is forming a cluster",
+                next: "Compare the cluster against tide, fuel hours, and arrival timing before filing anything louder."
+            },
+            silence: {
+                read: "has gone quiet in a way that looks intentional from across the chart table",
+                next: "Wait for one confirming ping and one boring explanation before letting the bulletin get theatrical."
+            },
+            repeat: {
+                read: "has repeated the same odd little move twice",
+                next: "Look for a third repeat or a practical cause, then decide whether this becomes a wire note."
+            },
+            surge: {
+                read: "is showing a small surge",
+                next: "Check whether the surge matches weather, schedule pressure, or plain old dockside impatience."
+            }
+        };
+
+        const signalConfidence = {
+            low: "low but interesting: watch the pattern, do not crown it prophecy",
+            medium: "medium and worth watching: file the shape, keep the conclusion restrained",
+            high: "high enough to file: publish the observation and leave room for reality to embarrass everyone"
         };
 
         const passageConditions = {
@@ -1928,6 +2109,45 @@
             await copyText(text, status, "Docket copied.");
         }
 
+        function signalBulletinId(sourceKey, patternKey) {
+            const sourceSlug = sourceKey.toUpperCase();
+            const patternSlug = patternKey.toUpperCase();
+            const now = new Date();
+            return `SIG-TWE-${sourceSlug}-${patternSlug}-${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`;
+        }
+
+        function buildSignalBulletin() {
+            const sourceKey = document.getElementById("signal-source").value;
+            const patternKey = document.getElementById("signal-pattern").value;
+            const confidenceKey = document.getElementById("signal-confidence").value;
+            const source = signalSources[sourceKey];
+            const pattern = signalPatterns[patternKey];
+            const confidence = signalConfidence[confidenceKey];
+
+            document.getElementById("signal-title").textContent = signalBulletinId(sourceKey, patternKey);
+            document.getElementById("signal-read").textContent = `${source} ${pattern.read}. The desk says this is ${confidence}.`;
+            document.getElementById("signal-next").textContent = pattern.next;
+            document.getElementById("signal-rule").textContent = "Public-safe observation only. No private tracking, no live routing, no secret claims.";
+            document.getElementById("signal-copy-status").textContent = "";
+        }
+
+        function currentSignalText() {
+            return [
+                document.getElementById("signal-title").textContent,
+                `Read: ${document.getElementById("signal-read").textContent}`,
+                `Next scan: ${document.getElementById("signal-next").textContent}`,
+                `Rule: ${document.getElementById("signal-rule").textContent}`
+            ].join("\n");
+        }
+
+        async function copySignalBulletin() {
+            await copyText(
+                currentSignalText(),
+                document.getElementById("signal-copy-status"),
+                "Signal bulletin copied."
+            );
+        }
+
         document.getElementById("passage-button").addEventListener("click", buildPassageBrief);
         document.getElementById("passage-copy-button").addEventListener("click", copyPassageBrief);
         document.querySelectorAll(".readiness-check").forEach((check) => {
@@ -1936,9 +2156,12 @@
         document.getElementById("readiness-copy-button").addEventListener("click", copyReadinessDocket);
         document.getElementById("tube-button").addEventListener("click", buildDispatchDocket);
         document.getElementById("tube-copy-button").addEventListener("click", copyDispatchDocket);
+        document.getElementById("signal-button").addEventListener("click", buildSignalBulletin);
+        document.getElementById("signal-copy-button").addEventListener("click", copySignalBulletin);
         wirePassageInputs();
         buildPassageBrief();
         updateReadinessBoard();
+        buildSignalBulletin();
     </script>
 </body>
 </html>
