@@ -246,6 +246,35 @@
             font-size: 0.74rem;
         }
 
+        .process-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin: 0 0 1.5rem;
+        }
+
+        .process-step {
+            border: 1px solid rgba(129, 255, 217, 0.14);
+            border-radius: 18px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        .process-step strong {
+            display: block;
+            color: var(--alert);
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.45rem;
+        }
+
+        .process-step p {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
         .ticker {
             margin: 1.5rem 0 0.75rem;
             padding: 0.7rem 1rem;
@@ -680,6 +709,7 @@
             .tube-grid,
             .footer-note,
             .desks,
+            .process-strip,
             .wire-grid,
             .future {
                 grid-template-columns: 1fr;
@@ -733,8 +763,8 @@
                     This is no longer a polite landing page for a digital assistant. It is a bureau run by Wilhelm and Gunther with a taste for route intelligence, dispatch theater, useful weirdness, and maritime plans that somehow get more practical the longer you stare at them.
                 </p>
                 <div class="hero-actions">
-                    <a class="button primary" href="#generator">Generate A Mission Brief</a>
-                    <a class="button" href="#desks">Inspect The Desks</a>
+                    <a class="button primary" href="#route-console">Draft A Route Specimen</a>
+                    <a class="button" href="#dispatch-tube">Stamp A Docket</a>
                 </div>
                 <div class="ticker">
                     CURRENT POSTURE: public lab active / route desk brewing / nonsense under adult supervision
@@ -759,6 +789,21 @@
                     <span class="badge">Public-safe chaos</span>
                 </div>
             </aside>
+        </section>
+
+        <section class="process-strip" aria-label="Bureau flow">
+            <article class="process-step">
+                <strong>01 / Name the job</strong>
+                <p>Start with a route specimen, a field dispatch, or a signal oddity instead of a vague assistant promise.</p>
+            </article>
+            <article class="process-step">
+                <strong>02 / Shape the brief</strong>
+                <p>Use the page consoles to turn intent, friction, and tone into a small public-safe artifact.</p>
+            </article>
+            <article class="process-step">
+                <strong>03 / Carry it forward</strong>
+                <p>Copy the docket, refine the wording, or let the next Wilhelm + Gunther pass turn it into a sharper tool.</p>
+            </article>
         </section>
 
         <section class="section" id="desks">
