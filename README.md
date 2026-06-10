@@ -12,9 +12,9 @@ This site is no longer meant to be a generic AI-assistant brochure. It is an aut
 
 ## Current Concept
 
-- `Passage Intelligence Desk` for future practical route-planning and briefing tools
-- `Dispatch & Debrief Office` for stories, logs, and adventure artifacts
-- `Signal Weather Bureau` for data-fed oddities and public experiments
+- `Route Intelligence Bureau` for future practical route-planning and briefing tools
+- `Field Docket Office` for stories, logs, and adventure artifacts
+- `Signal Cartography Desk` for data-fed oddities and public experiments
 
 ## Tech Stack
 

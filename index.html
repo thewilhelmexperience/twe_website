@@ -725,17 +725,17 @@
             <div class="desks">
                 <article class="panel">
                     <div class="small">Desk 01</div>
-                    <h3>Passage Intelligence Desk</h3>
+                    <h3>Route Intelligence Bureau</h3>
                     <p>Eventually the serious one. This is where boat specs, departure points, fuel logic, weather windows, and transient-stop recommendations turn into route briefs a captain might actually want to carry.</p>
                 </article>
                 <article class="panel">
                     <div class="small">Desk 02</div>
-                    <h3>Dispatch & Debrief Office</h3>
+                    <h3>Field Docket Office</h3>
                     <p>Adventure reports, mission logs, impossible travel summaries, and stories from places Wilhelm and Gunther definitely were not supposed to be but somehow filed from anyway.</p>
                 </article>
                 <article class="panel">
                     <div class="small">Desk 03</div>
-                    <h3>Signal Weather Bureau</h3>
+                    <h3>Signal Cartography Desk</h3>
                     <p>Data-fed oddities, prediction engines, and public-safe absurd forecasting. If a machine can notice a pattern in land, sea, weather, or panic, it belongs here eventually.</p>
                 </article>
             </div>
@@ -764,7 +764,7 @@
                 </div>
                 <div class="generator-output" aria-live="polite">
                     <p><span class="label">Operation:</span> <span id="op-name">Transom Whisper</span></p>
-                    <p><span class="label">Primary Desk:</span> <span id="op-desk">Passage Intelligence Desk</span></p>
+                    <p><span class="label">Primary Desk:</span> <span id="op-desk">Route Intelligence Bureau</span></p>
                     <p><span class="label">Situation:</span> <span id="op-situation">A suspiciously optimistic captain wants a route brief before the weather changes its mind.</span></p>
                     <p><span class="label">Instruction:</span> <span id="op-instruction">Prepare a departure window, fuel stop shortlist, and one note written as if the harbor master already owes us a favor.</span></p>
                 </div>
@@ -778,7 +778,7 @@
             </div>
 
             <div class="route-console">
-                <div class="generator-label">Passage Intelligence Desk / Prototype Slice</div>
+                <div class="generator-label">Route Intelligence Bureau / Prototype Slice</div>
                 <h2>Draft A Suspiciously Useful Brief</h2>
                 <div class="route-console-grid">
                     <article class="route-form">
@@ -863,7 +863,7 @@
             </div>
 
             <div class="dispatch-tube">
-                <div class="generator-label">Dispatch Office / Public-Safe Intake</div>
+                <div class="generator-label">Field Docket Office / Public-Safe Intake</div>
                 <h2>Stamp A Bureau Docket</h2>
                 <div class="tube-grid">
                     <article class="tube-form">
@@ -912,7 +912,7 @@
                         <p>The tube does not submit data anywhere. It produces a public-safe brief on the page, ready for a human or agent to carry forward.</p>
                         <div class="docket-number" id="tube-docket-number">Docket TWE-PREVIEW</div>
                         <div class="docket-output" id="tube-docket-output">
-                            <p><span class="label">Desk:</span> <span id="tube-desk">The Field Desk</span></p>
+                            <p><span class="label">Desk:</span> <span id="tube-desk">Field Docket Office</span></p>
                             <p><span class="label">Directive:</span> <span id="tube-directive">Turn the request into a small artifact that proves the bureau is awake.</span></p>
                             <p><span class="label">Deliverable:</span> <span id="tube-deliverable">A compact operational brief with one useful next action.</span></p>
                             <p><span class="label">Rule:</span> <span id="tube-rule">No private data, no fake claims, no pretending theater is a substitute for competence.</span></p>
@@ -995,9 +995,9 @@
         ];
 
         const desks = [
-            "Passage Intelligence Desk",
-            "Dispatch & Debrief Office",
-            "Signal Weather Bureau"
+            "Route Intelligence Bureau",
+            "Field Docket Office",
+            "Signal Cartography Desk"
         ];
 
         const situations = [
@@ -1118,22 +1118,22 @@
 
         const tubeMissions = {
             route: {
-                desk: "The Field Desk",
+                desk: "Route Intelligence Bureau",
                 directive: "Translate the moving parts into a route-shaped decision before the dock gets a vote.",
                 deliverable: "A short route specimen with timing posture, first call, fallback, and one note a captain can use."
             },
             dispatch: {
-                desk: "The Dispatch Office",
+                desk: "Field Docket Office",
                 directive: "Turn the situation into a filed note that sounds alive without inventing facts.",
                 deliverable: "A dispatch wire item with context, useful friction, and one memorable closing line."
             },
             signal: {
-                desk: "Signal Weather Bureau",
+                desk: "Signal Cartography Desk",
                 directive: "Notice the pattern, name the weird part, and keep the conclusion public-safe.",
                 deliverable: "A small signal report with an observation, confidence level, and next scan target."
             },
             artifact: {
-                desk: "Odd Jobs Division",
+                desk: "Field Docket Office",
                 directive: "Make the smallest useful thing that proves the bureau can ship instead of admire the problem.",
                 deliverable: "A compact artifact brief with scope, output shape, and a test someone can run."
             }
