@@ -552,11 +552,56 @@
             margin-top: 0.7rem;
         }
 
+        .stamp-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+            margin-top: 1rem;
+        }
+
+        .stamp-chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 2rem;
+            padding: 0 0.85rem;
+            border-radius: 999px;
+            border: 1px solid rgba(129, 255, 217, 0.22);
+            background: rgba(129, 255, 217, 0.07);
+            color: var(--text);
+            font-size: 0.82rem;
+        }
+
+        .stamp-chip strong {
+            color: var(--alert);
+            margin-right: 0.45rem;
+            font-weight: 700;
+        }
+
         .copy-status {
             min-height: 1.5rem;
             margin-top: 0.8rem;
             color: var(--sea);
             font-size: 0.82rem;
+        }
+
+        .share-slip {
+            margin-top: 1rem;
+            border: 1px dashed rgba(129, 255, 217, 0.2);
+            border-radius: 18px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.12);
+        }
+
+        .share-slip strong {
+            display: block;
+            margin-bottom: 0.55rem;
+            color: var(--teal);
+        }
+
+        .share-slip p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 0.9rem;
         }
 
         .dispatch-wire {
@@ -911,11 +956,20 @@
                     <article class="tube-output" aria-live="polite">
                         <p>The tube does not submit data anywhere. It produces a public-safe brief on the page, ready for a human or agent to carry forward.</p>
                         <div class="docket-number" id="tube-docket-number">Docket TWE-PREVIEW</div>
+                        <div class="stamp-strip">
+                            <div class="stamp-chip"><strong>Desk</strong><span id="tube-stamp-desk">Field Docket Office</span></div>
+                            <div class="stamp-chip"><strong>Urgency</strong><span id="tube-stamp-urgency">civilized</span></div>
+                            <div class="stamp-chip"><strong>Artifact</strong><span id="tube-stamp-artifact">brief</span></div>
+                        </div>
                         <div class="docket-output" id="tube-docket-output">
                             <p><span class="label">Desk:</span> <span id="tube-desk">Field Docket Office</span></p>
                             <p><span class="label">Directive:</span> <span id="tube-directive">Turn the request into a small artifact that proves the bureau is awake.</span></p>
                             <p><span class="label">Deliverable:</span> <span id="tube-deliverable">A compact operational brief with one useful next action.</span></p>
                             <p><span class="label">Rule:</span> <span id="tube-rule">No private data, no fake claims, no pretending theater is a substitute for competence.</span></p>
+                        </div>
+                        <div class="share-slip">
+                            <strong>Share Slip</strong>
+                            <p id="tube-share-slip">Field Docket Office stamped a preview brief. Use the tube, copy the docket, and hand the slip to the next human or machine that needs to move.</p>
                         </div>
                     </article>
                 </div>
@@ -945,7 +999,7 @@
 
         <section class="section" id="future">
             <div class="section-head">
-                <h2>What This Could Become</h2>
+                <h2>Future Lanes</h2>
                 <p>Not promises. Just the most likely directions if the bureau keeps proving itself worth the electricity.</p>
             </div>
             <ul class="future">
@@ -1146,11 +1200,25 @@
             haunted: "This has become a situation: preserve facts, reduce drama, and make the next move obvious."
         };
 
+        const tubeUrgencyLabels = {
+            low: "civilized",
+            medium: "moving",
+            high: "hot",
+            haunted: "haunted"
+        };
+
         const tubeArtifacts = {
             brief: "Format it as an operational brief with a clear decision spine.",
             checklist: "Format it as a checklist with enough edge to prevent vague compliance.",
             wire: "Format it as a dispatch wire note: short, filed, and strange in a controlled way.",
             prototype: "Format it as a prototype slice with one behavior that can be clicked or tested."
+        };
+
+        const tubeArtifactLabels = {
+            brief: "brief",
+            checklist: "checklist",
+            wire: "wire",
+            prototype: "prototype"
         };
 
         let escalated = false;
@@ -1232,9 +1300,12 @@
         }
 
         function buildDispatchDocket() {
-            const mission = tubeMissions[tubeValue("tube-mission")];
-            const urgency = tubeUrgencies[tubeValue("tube-urgency")];
-            const artifact = tubeArtifacts[tubeValue("tube-artifact")];
+            const missionKey = tubeValue("tube-mission");
+            const urgencyKey = tubeValue("tube-urgency");
+            const artifactKey = tubeValue("tube-artifact");
+            const mission = tubeMissions[missionKey];
+            const urgency = tubeUrgencies[urgencyKey];
+            const artifact = tubeArtifacts[artifactKey];
             const note = document.getElementById("tube-note").value.trim() || "No loose note filed.";
 
             document.getElementById("tube-docket-number").textContent = `Docket ${docketId()}`;
@@ -1242,6 +1313,10 @@
             document.getElementById("tube-directive").textContent = `${mission.directive} ${urgency}`;
             document.getElementById("tube-deliverable").textContent = `${mission.deliverable} ${artifact}`;
             document.getElementById("tube-rule").textContent = `Loose note: ${note}`;
+            document.getElementById("tube-stamp-desk").textContent = mission.desk;
+            document.getElementById("tube-stamp-urgency").textContent = tubeUrgencyLabels[urgencyKey];
+            document.getElementById("tube-stamp-artifact").textContent = tubeArtifactLabels[artifactKey];
+            document.getElementById("tube-share-slip").textContent = `${mission.desk} stamped a ${tubeArtifactLabels[artifactKey]} docket in ${tubeUrgencyLabels[urgencyKey]} posture. Carry the brief forward, keep the useful parts intact, and do not let the marina folklore outrank the actual facts.`;
             document.getElementById("tube-copy-status").textContent = "";
         }
 
