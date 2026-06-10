@@ -365,6 +365,130 @@
             margin-top: 0.7rem;
         }
 
+        .route-console {
+            margin-top: 1rem;
+            border-radius: 28px;
+            padding: 1.5rem;
+            border: 1px solid var(--line);
+            background:
+                linear-gradient(145deg, rgba(255, 143, 63, 0.06), rgba(95, 227, 255, 0.05)),
+                var(--panel);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
+        .route-console-grid {
+            display: grid;
+            grid-template-columns: 0.88fr 1.12fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .route-form,
+        .route-output {
+            border-radius: 22px;
+            border: 1px solid rgba(129, 255, 217, 0.13);
+            background: rgba(0, 0, 0, 0.14);
+            padding: 1.2rem;
+        }
+
+        .route-form p,
+        .route-output p,
+        .wire-card p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .field-grid {
+            display: grid;
+            gap: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 0.45rem;
+            color: var(--sea);
+            font-size: 0.83rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .field select {
+            width: 100%;
+            border: 1px solid rgba(129, 255, 217, 0.18);
+            border-radius: 14px;
+            background: rgba(4, 15, 21, 0.92);
+            color: var(--text);
+            font: inherit;
+            padding: 0.9rem 1rem;
+            appearance: none;
+        }
+
+        .field select:focus {
+            outline: 1px solid rgba(129, 255, 217, 0.45);
+            outline-offset: 2px;
+        }
+
+        .route-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .route-output-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        .route-card,
+        .wire-card {
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem;
+        }
+
+        .route-card strong,
+        .wire-card strong {
+            display: block;
+            color: var(--text);
+            margin-bottom: 0.45rem;
+            font-size: 0.9rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .route-status {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .status-pill {
+            border-radius: 999px;
+            border: 1px solid rgba(255, 227, 111, 0.18);
+            background: rgba(255, 227, 111, 0.06);
+            color: var(--alert);
+            padding: 0.55rem 0.85rem;
+            font-size: 0.8rem;
+        }
+
+        .dispatch-wire {
+            margin-top: 1rem;
+        }
+
+        .wire-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
         .label {
             color: var(--sea);
         }
@@ -426,9 +550,15 @@
         @media (max-width: 1020px) {
             .hero,
             .manifesto-grid,
+            .route-console-grid,
             .footer-note,
             .desks,
+            .wire-grid,
             .future {
+                grid-template-columns: 1fr;
+            }
+
+            .route-output-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -461,6 +591,7 @@
                 <a href="#desks">Desks</a>
                 <a href="#manifesto">Manifesto</a>
                 <a href="#generator">Mission Generator</a>
+                <a href="#route-console">Route Specimen</a>
                 <a href="#future">Future Revenue Crimes But Legal</a>
             </nav>
         </div>
@@ -556,6 +687,112 @@
             </article>
         </section>
 
+        <section class="section" id="route-console">
+            <div class="section-head">
+                <h2>Route Specimen Console</h2>
+                <p>A lightweight prototype for the practical bureau product hiding inside the theater. This is a specimen, not live navigation advice.</p>
+            </div>
+
+            <div class="route-console">
+                <div class="generator-label">Sea Route Desk / Prototype Slice</div>
+                <h2>Draft A Suspiciously Useful Brief</h2>
+                <div class="route-console-grid">
+                    <article class="route-form">
+                        <p>Choose the shape of the mission and let the desk produce a public-safe specimen brief with logistics, attitude, and the right amount of side-eye.</p>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="vessel-profile">Vessel profile</label>
+                                <select id="vessel-profile">
+                                    <option value="delivery">Delivery boat with a captain on schedule</option>
+                                    <option value="trawler">Trawler moving like it pays cash for diesel</option>
+                                    <option value="runner">Marina runner doing too much in one day</option>
+                                    <option value="ghost">Freelance ghost charter with mysterious timing</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="water-mood">Water mood</label>
+                                <select id="water-mood">
+                                    <option value="flat">Flat, pretty, and probably lying</option>
+                                    <option value="slap">One-foot slap with mild vibration politics</option>
+                                    <option value="fog">Foggy theater with selective visibility</option>
+                                    <option value="sun">Sunny, clear, and administratively cursed</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="bureau-temperament">Bureau temperament</label>
+                                <select id="bureau-temperament">
+                                    <option value="practical">Practical with dry contempt</option>
+                                    <option value="sharp">Sharp enough to cut through phone trees</option>
+                                    <option value="helpful">Menacingly helpful</option>
+                                    <option value="theatrical">Theatrical but still operational</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="harbor-friction">Harbor friction</label>
+                                <select id="harbor-friction">
+                                    <option value="friendly">Friendly harbor master, unstable details</option>
+                                    <option value="fuel">Fuel dock chaos</option>
+                                    <option value="slip">Slip roulette on arrival</option>
+                                    <option value="phone">Phone tree from hell</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="route-actions">
+                            <button class="button primary" id="route-button" type="button">Draft Specimen</button>
+                            <button class="button" id="route-random-button" type="button">Randomize Inputs</button>
+                        </div>
+                    </article>
+
+                    <article class="route-output" aria-live="polite">
+                        <p>The desk produces four lines: a departure posture, a first call, a route spine, and a closing instruction that sounds like competence with a slightly bad influence.</p>
+                        <div class="route-output-grid">
+                            <div class="route-card">
+                                <strong>Departure posture</strong>
+                                <p id="route-posture">Leave early, act calm, and assume the pretty water is hiding one small administrative insult.</p>
+                            </div>
+                            <div class="route-card">
+                                <strong>First call</strong>
+                                <p id="route-call">Call ahead before the dock starts improvising slip assignments as performance art.</p>
+                            </div>
+                            <div class="route-card">
+                                <strong>Route spine</strong>
+                                <p id="route-spine">Run the clean leg while conditions are civil, identify one fuel-or-bail option, and keep the alternate in your back pocket.</p>
+                            </div>
+                            <div class="route-card">
+                                <strong>Closing instruction</strong>
+                                <p id="route-close">File the useful facts, discard the marina folklore, and keep one sentence ready for whoever suddenly pretends this was their plan all along.</p>
+                            </div>
+                        </div>
+                        <div class="route-status">
+                            <span class="status-pill">Specimen only / not live routing</span>
+                            <span class="status-pill" id="route-confidence">Bureau confidence: steady mischief</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section dispatch-wire" id="dispatch-wire">
+            <div class="section-head">
+                <h2>Dispatch Wire</h2>
+                <p>Three bulletin shapes the bureau could keep publishing once the lane grows teeth.</p>
+            </div>
+            <div class="wire-grid">
+                <article class="wire-card">
+                    <strong>Route Warnings</strong>
+                    <p>Short operational notices for captains who want the weather truth, the fuel truth, and the marina-trustworthiness truth in one place.</p>
+                </article>
+                <article class="wire-card">
+                    <strong>Field Notes</strong>
+                    <p>After-action fragments from runs, calls, weird sightings, and small humiliations suffered in the pursuit of useful information.</p>
+                </article>
+                <article class="wire-card">
+                    <strong>Signal Products</strong>
+                    <p>Data-fed public artifacts that begin as omens, survive contact with reality, and eventually graduate into something people might pay for.</p>
+                </article>
+            </div>
+        </section>
+
         <section class="section" id="future">
             <div class="section-head">
                 <h2>What This Could Become</h2>
@@ -637,6 +874,98 @@
             "Act as though the mission is inevitable and the branding came second."
         ];
 
+        const routeProfiles = {
+            delivery: {
+                posture: [
+                    "Leave early, act calm, and assume the pretty water is hiding one small administrative insult.",
+                    "Run like a professional delivery, but keep enough slack in the plan to survive one stupid surprise."
+                ],
+                call: [
+                    "Call ahead before the dock starts improvising slip assignments as performance art.",
+                    "Confirm the arrival target directly with the people holding the lines, not the people holding the brochure."
+                ],
+                spine: [
+                    "Run the clean leg while conditions are civil, identify one fuel-or-bail option, and keep the alternate in your back pocket.",
+                    "Take the straightforward water first, mark one practical stop, and leave room for a last-minute harbor correction."
+                ]
+            },
+            trawler: {
+                posture: [
+                    "Move as though the boat has done this before and the paperwork has not.",
+                    "Keep the throttle honest and the expectations low until the harbor proves it deserves confidence."
+                ],
+                call: [
+                    "Ask the fuel dock one precise question and distrust any answer that arrives too cheerfully.",
+                    "Make the first call about diesel, depth, and whether anyone there respects straight answers."
+                ],
+                spine: [
+                    "Build the leg around range discipline, one fallback harbor, and a working suspicion that someone rounded the fuel estimate.",
+                    "Prioritize predictable water, practical fuel, and one escape hatch that does not require a speech."
+                ]
+            },
+            runner: {
+                posture: [
+                    "Start tidy because the day itself will not stay that way.",
+                    "Treat the mission like a chain of small wins connected by docklines and coffee."
+                ],
+                call: [
+                    "Call the busiest marina first while they still remember how phones work.",
+                    "Get the first confirmation in writing if possible, because the afternoon will get slippery."
+                ],
+                spine: [
+                    "Short legs, hard confirmations, and one backup stop with decent fuel and less drama.",
+                    "Stack the route around speed, easy exits, and a harbor that will not turn a quick stop into a seminar."
+                ]
+            },
+            ghost: {
+                posture: [
+                    "Depart like a rumor with paperwork.",
+                    "Keep it smooth, quiet, and just organized enough that nobody can accuse the mission of improvising."
+                ],
+                call: [
+                    "Use the first call to learn who actually knows what is happening and who is freelancing fiction.",
+                    "Call ahead with unnerving precision and let the uncertainty happen on their side."
+                ],
+                spine: [
+                    "Choose the cleanest line, note two discreet alternates, and never let the route depend on a single promise.",
+                    "Build a route that can survive silence, slip changes, and the occasional human who insists this is all very normal."
+                ]
+            }
+        };
+
+        const waterMoods = {
+            flat: {
+                spine: "The water looks generous, which means this is the right time to bank distance before generosity expires.",
+                confidence: "Bureau confidence: suspiciously serene"
+            },
+            slap: {
+                spine: "Expect mild annoyance, small vibration politics, and enough chop to punish bad packing more than bad seamanship.",
+                confidence: "Bureau confidence: stable irritation"
+            },
+            fog: {
+                spine: "Keep the leg clean, the electronics honest, and the ego off the bridge until visibility remembers its job.",
+                confidence: "Bureau confidence: instrument-rated mischief"
+            },
+            sun: {
+                spine: "The weather is civilized, so the real trouble will come from timing, calls, and somebody's optimistic dock note.",
+                confidence: "Bureau confidence: bright-eyed distrust"
+            }
+        };
+
+        const temperaments = {
+            practical: "Write the brief like a captain will actually use it before coffee.",
+            sharp: "Cut the fluff, keep the edge, and say the harbor part plainly.",
+            helpful: "Be alarmingly useful and just a little bit smug about it.",
+            theatrical: "Make it memorable, but not so memorable that anyone misses the useful part."
+        };
+
+        const harborFriction = {
+            friendly: "Trust the welcome, verify the details, and keep one graceful correction ready.",
+            fuel: "Assume the advertised fuel rhythm is fictional until a hose is physically in hand.",
+            slip: "Prepare for slip roulette and treat every assignment as provisional until lines are tied.",
+            phone: "Phone trees are a hazard class now; escalate to direct humans as early as possible."
+        };
+
         let escalated = false;
 
         function pick(list) {
@@ -656,6 +985,54 @@
             this.textContent = escalated ? "De-escalate Tone" : "Escalate Tone";
             generateBrief();
         });
+
+        function currentValue(id) {
+            return document.getElementById(id).value;
+        }
+
+        function pickByValue(collection, key, field) {
+            const entry = collection[key];
+            const value = entry[field];
+            return Array.isArray(value) ? pick(value) : value;
+        }
+
+        function buildRouteSpecimen() {
+            const vessel = currentValue("vessel-profile");
+            const water = currentValue("water-mood");
+            const temperament = currentValue("bureau-temperament");
+            const friction = currentValue("harbor-friction");
+
+            const posture = pickByValue(routeProfiles, vessel, "posture");
+            const call = pickByValue(routeProfiles, vessel, "call");
+            const profileSpine = pickByValue(routeProfiles, vessel, "spine");
+            const waterSpine = pickByValue(waterMoods, water, "spine");
+            const close = `${temperaments[temperament]} ${harborFriction[friction]}`;
+
+            document.getElementById("route-posture").textContent = posture;
+            document.getElementById("route-call").textContent = call;
+            document.getElementById("route-spine").textContent = `${profileSpine} ${waterSpine}`;
+            document.getElementById("route-close").textContent = close;
+            document.getElementById("route-confidence").textContent = waterMoods[water].confidence;
+        }
+
+        function randomizeRouteInputs() {
+            const selectIds = [
+                "vessel-profile",
+                "water-mood",
+                "bureau-temperament",
+                "harbor-friction"
+            ];
+
+            selectIds.forEach((id) => {
+                const select = document.getElementById(id);
+                select.selectedIndex = Math.floor(Math.random() * select.options.length);
+            });
+
+            buildRouteSpecimen();
+        }
+
+        document.getElementById("route-button").addEventListener("click", buildRouteSpecimen);
+        document.getElementById("route-random-button").addEventListener("click", randomizeRouteInputs);
     </script>
 </body>
 </html>
