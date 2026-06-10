@@ -581,6 +581,63 @@
             margin-top: 0.7rem;
         }
 
+        .readiness-list {
+            display: grid;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .check-row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.75rem;
+            align-items: start;
+            border: 1px solid rgba(129, 255, 217, 0.13);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.85rem;
+            cursor: pointer;
+        }
+
+        .check-row input {
+            width: 1.15rem;
+            height: 1.15rem;
+            margin-top: 0.1rem;
+            accent-color: var(--teal);
+        }
+
+        .check-row strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .check-row span {
+            color: var(--muted);
+            line-height: 1.5;
+            font-size: 0.86rem;
+        }
+
+        .readiness-score {
+            display: grid;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .score-track {
+            height: 0.85rem;
+            border-radius: 999px;
+            border: 1px solid rgba(129, 255, 217, 0.16);
+            background: rgba(0, 0, 0, 0.22);
+            overflow: hidden;
+        }
+
+        .score-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--signal), var(--alert), var(--teal));
+            transition: width 0.2s ease;
+        }
+
         .route-status {
             display: flex;
             flex-wrap: wrap;
@@ -823,6 +880,7 @@
                 <a href="#generator">Mission Generator</a>
                 <a href="#route-console">Route Specimen</a>
                 <a href="#passage-builder">Passage Builder</a>
+                <a href="#readiness-board">Readiness Board</a>
                 <a href="#dispatch-tube">Dispatch Tube</a>
                 <a href="#dispatch-wire">Wire</a>
                 <a href="#future">Future Lanes</a>
@@ -1128,6 +1186,87 @@
                             <p><span class="label">Plan:</span> <span id="passage-plan">Cruise 18 kt for about 7h 07m. Budget 171 gal from 260 gal aboard.</span></p>
                             <p><span class="label">Rule:</span> <span id="passage-rule">Specimen math only. Verify charts, weather, fuel, daylight, notices, and local knowledge before departure.</span></p>
                         </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="readiness-board">
+            <div class="section-head">
+                <h2>Departure Readiness Board</h2>
+                <p>A pre-departure sanity board for turning known checks into a copyable go/no-go docket before optimism starts touching the throttle.</p>
+            </div>
+
+            <div class="passage-builder">
+                <div class="generator-label">Route Intelligence Bureau / Preflight Check</div>
+                <h2>Score The Departure</h2>
+                <div class="passage-grid">
+                    <article class="passage-form">
+                        <p>Tick the checks that are actually done. The board turns the count into a posture, a next move, and a copyable docket for the trip notes.</p>
+                        <div class="readiness-list">
+                            <label class="check-row">
+                                <input class="readiness-check" type="checkbox" data-weight="2" checked>
+                                <span><strong>Weather window checked</strong>Marine forecast, radar, wind, sea state, and timing reviewed with fresh eyes.</span>
+                            </label>
+                            <label class="check-row">
+                                <input class="readiness-check" type="checkbox" data-weight="2" checked>
+                                <span><strong>Fuel reserve clears target</strong>Trip burn, reserve, and fuel-stop assumptions are written down instead of wished into existence.</span>
+                            </label>
+                            <label class="check-row">
+                                <input class="readiness-check" type="checkbox" data-weight="1" checked>
+                                <span><strong>Arrival contact confirmed</strong>Slip, dock, or handoff contact has been confirmed by a human who sounds awake.</span>
+                            </label>
+                            <label class="check-row">
+                                <input class="readiness-check" type="checkbox" data-weight="1">
+                                <span><strong>Alternate named</strong>One bailout harbor, fuel stop, or delay option is named before the boat leaves.</span>
+                            </label>
+                            <label class="check-row">
+                                <input class="readiness-check" type="checkbox" data-weight="1">
+                                <span><strong>Boat basics inspected</strong>Bilge, fluids, batteries, lines, fenders, safety gear, and electronics got a real look.</span>
+                            </label>
+                            <label class="check-row">
+                                <input class="readiness-check" type="checkbox" data-weight="1">
+                                <span><strong>Daylight and timing sane</strong>The plan leaves enough daylight or night-running confidence for the weakest part of the day.</span>
+                            </label>
+                        </div>
+                    </article>
+
+                    <article class="passage-output" aria-live="polite">
+                        <p>The board is intentionally blunt. If the score is ugly, the Bureau says so before the water gets a vote.</p>
+                        <div class="passage-metrics">
+                            <div class="metric">
+                                <span>Score</span>
+                                <strong id="readiness-score">5 / 8</strong>
+                            </div>
+                            <div class="metric">
+                                <span>Posture</span>
+                                <strong id="readiness-posture">Caution</strong>
+                            </div>
+                            <div class="metric">
+                                <span>Open items</span>
+                                <strong id="readiness-open">3</strong>
+                            </div>
+                        </div>
+                        <div class="readiness-score">
+                            <div class="score-track" aria-hidden="true">
+                                <div class="score-fill" id="readiness-fill"></div>
+                            </div>
+                            <p id="readiness-next">Name the alternate, inspect the boat basics, and confirm daylight before this plan gets smug.</p>
+                        </div>
+                        <div class="route-output-grid">
+                            <div class="passage-card">
+                                <strong>Board verdict</strong>
+                                <p id="readiness-verdict">Workable but not clean. Finish the missing checks before treating this as a real departure plan.</p>
+                            </div>
+                            <div class="passage-card">
+                                <strong>Docket tag</strong>
+                                <p id="readiness-docket">READY-TWE-PREVIEW</p>
+                            </div>
+                        </div>
+                        <div class="route-actions">
+                            <button class="button primary" id="readiness-copy-button" type="button">Copy Readiness Docket</button>
+                        </div>
+                        <div class="copy-status" id="readiness-copy-status" aria-live="polite"></div>
                     </article>
                 </div>
             </div>
@@ -1656,6 +1795,80 @@
             );
         }
 
+        function readinessDocket(score, total) {
+            const now = new Date();
+            return `READY-TWE-${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}-${score}OF${total}`;
+        }
+
+        function readinessState(percent) {
+            if (percent >= 0.88) {
+                return {
+                    posture: "Clean",
+                    verdict: "Clean enough for a real planning pass. Keep verifying live conditions until departure.",
+                    next: "The board is mostly green. Recheck weather, fuel, and arrival contact before lines come off."
+                };
+            }
+            if (percent >= 0.62) {
+                return {
+                    posture: "Caution",
+                    verdict: "Workable but not clean. Finish the missing checks before treating this as a real departure plan.",
+                    next: "Name the alternate, inspect the boat basics, and confirm daylight before this plan gets smug."
+                };
+            }
+            if (percent >= 0.38) {
+                return {
+                    posture: "Hold",
+                    verdict: "Too many assumptions are still floating loose. Pause the romance and close the operational gaps.",
+                    next: "Start with weather, fuel reserve, and arrival contact. The rest can wait; those cannot."
+                };
+            }
+            return {
+                posture: "No-Go",
+                verdict: "The Bureau declines to bless this departure-shaped rumor.",
+                next: "Do the basics first: weather, fuel, arrival, alternate, boat checks, and daylight."
+            };
+        }
+
+        function updateReadinessBoard() {
+            const checks = Array.from(document.querySelectorAll(".readiness-check"));
+            const total = checks.reduce((sum, check) => sum + Number.parseInt(check.dataset.weight, 10), 0);
+            const score = checks.reduce((sum, check) => {
+                return sum + (check.checked ? Number.parseInt(check.dataset.weight, 10) : 0);
+            }, 0);
+            const open = checks.filter((check) => !check.checked).length;
+            const percent = total > 0 ? score / total : 0;
+            const state = readinessState(percent);
+
+            document.getElementById("readiness-score").textContent = `${score} / ${total}`;
+            document.getElementById("readiness-open").textContent = String(open);
+            document.getElementById("readiness-posture").textContent = state.posture;
+            document.getElementById("readiness-verdict").textContent = state.verdict;
+            document.getElementById("readiness-next").textContent = state.next;
+            document.getElementById("readiness-fill").style.width = `${Math.round(percent * 100)}%`;
+            document.getElementById("readiness-docket").textContent = readinessDocket(score, total);
+            document.getElementById("readiness-copy-status").textContent = "";
+        }
+
+        function currentReadinessText() {
+            return [
+                document.getElementById("readiness-docket").textContent,
+                `Score: ${document.getElementById("readiness-score").textContent}`,
+                `Posture: ${document.getElementById("readiness-posture").textContent}`,
+                `Open items: ${document.getElementById("readiness-open").textContent}`,
+                `Verdict: ${document.getElementById("readiness-verdict").textContent}`,
+                `Next move: ${document.getElementById("readiness-next").textContent}`,
+                "Rule: Pre-departure sanity check only. Verify live weather, charts, fuel, notices, crew, and local knowledge."
+            ].join("\n");
+        }
+
+        async function copyReadinessDocket() {
+            await copyText(
+                currentReadinessText(),
+                document.getElementById("readiness-copy-status"),
+                "Readiness docket copied."
+            );
+        }
+
         function wirePassageInputs() {
             [
                 "passage-origin",
@@ -1717,10 +1930,15 @@
 
         document.getElementById("passage-button").addEventListener("click", buildPassageBrief);
         document.getElementById("passage-copy-button").addEventListener("click", copyPassageBrief);
+        document.querySelectorAll(".readiness-check").forEach((check) => {
+            check.addEventListener("change", updateReadinessBoard);
+        });
+        document.getElementById("readiness-copy-button").addEventListener("click", copyReadinessDocket);
         document.getElementById("tube-button").addEventListener("click", buildDispatchDocket);
         document.getElementById("tube-copy-button").addEventListener("click", copyDispatchDocket);
         wirePassageInputs();
         buildPassageBrief();
+        updateReadinessBoard();
     </script>
 </body>
 </html>

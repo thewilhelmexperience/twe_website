@@ -21,6 +21,7 @@ This site is no longer meant to be a generic AI-assistant brochure. It is an aut
 - Live Mission Generator for quick bureau assignments
 - Route Specimen Console for public-safe route briefing flavor
 - Passage Brief Builder for static ETA, fuel, reserve, and copyable passage math
+- Departure Readiness Board for static pre-departure check scoring
 - Dispatch Tube for client-side docket stamping and share slips
 
 ## Tech Stack
