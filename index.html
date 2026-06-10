@@ -175,6 +175,7 @@
         .panel,
         .manifesto,
         .generator,
+        .dispatch-tube,
         .footer-note {
             border: 1px solid var(--line);
             background: var(--panel);
@@ -425,7 +426,26 @@
             appearance: none;
         }
 
-        .field select:focus {
+        .field input,
+        .field textarea {
+            width: 100%;
+            border: 1px solid rgba(129, 255, 217, 0.18);
+            border-radius: 14px;
+            background: rgba(4, 15, 21, 0.92);
+            color: var(--text);
+            font: inherit;
+            padding: 0.9rem 1rem;
+        }
+
+        .field textarea {
+            min-height: 7.5rem;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .field select:focus,
+        .field input:focus,
+        .field textarea:focus {
             outline: 1px solid rgba(129, 255, 217, 0.45);
             outline-offset: 2px;
         }
@@ -476,6 +496,67 @@
             color: var(--alert);
             padding: 0.55rem 0.85rem;
             font-size: 0.8rem;
+        }
+
+        .dispatch-tube {
+            border-radius: 28px;
+            padding: 1.5rem;
+            background:
+                linear-gradient(145deg, rgba(129, 255, 217, 0.05), rgba(255, 227, 111, 0.06)),
+                var(--panel-strong);
+        }
+
+        .tube-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tube-form,
+        .tube-output {
+            border-radius: 22px;
+            border: 1px solid rgba(129, 255, 217, 0.13);
+            background: rgba(0, 0, 0, 0.14);
+            padding: 1.2rem;
+        }
+
+        .tube-form p,
+        .tube-output p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .docket-number {
+            display: inline-flex;
+            margin-top: 1rem;
+            border: 1px solid rgba(255, 227, 111, 0.28);
+            border-radius: 999px;
+            color: var(--alert);
+            background: rgba(255, 227, 111, 0.06);
+            padding: 0.55rem 0.85rem;
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .docket-output {
+            margin-top: 1rem;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem;
+        }
+
+        .docket-output p + p {
+            margin-top: 0.7rem;
+        }
+
+        .copy-status {
+            min-height: 1.5rem;
+            margin-top: 0.8rem;
+            color: var(--sea);
+            font-size: 0.82rem;
         }
 
         .dispatch-wire {
@@ -551,6 +632,7 @@
             .hero,
             .manifesto-grid,
             .route-console-grid,
+            .tube-grid,
             .footer-note,
             .desks,
             .wire-grid,
@@ -592,6 +674,7 @@
                 <a href="#manifesto">Manifesto</a>
                 <a href="#generator">Mission Generator</a>
                 <a href="#route-console">Route Specimen</a>
+                <a href="#dispatch-tube">Dispatch Tube</a>
                 <a href="#future">Future Revenue Crimes But Legal</a>
             </nav>
         </div>
@@ -766,6 +849,72 @@
                         <div class="route-status">
                             <span class="status-pill">Specimen only / not live routing</span>
                             <span class="status-pill" id="route-confidence">Bureau confidence: steady mischief</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="dispatch-tube">
+            <div class="section-head">
+                <h2>Dispatch Tube</h2>
+                <p>A client-side intake console for turning a strange request into a useful bureau docket without collecting anything from the visitor.</p>
+            </div>
+
+            <div class="dispatch-tube">
+                <div class="generator-label">Dispatch Office / Public-Safe Intake</div>
+                <h2>Stamp A Bureau Docket</h2>
+                <div class="tube-grid">
+                    <article class="tube-form">
+                        <p>Choose the shape of the work. The tube stamps a docket number and drafts a brief that can be copied, refined, or thrown directly into the next experiment.</p>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="tube-mission">Mission type</label>
+                                <select id="tube-mission">
+                                    <option value="route">Route desk specimen</option>
+                                    <option value="dispatch">Field dispatch</option>
+                                    <option value="signal">Signal oddity</option>
+                                    <option value="artifact">Useful artifact</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="tube-urgency">Urgency</label>
+                                <select id="tube-urgency">
+                                    <option value="low">Keep it civilized</option>
+                                    <option value="medium">Move before the weather changes</option>
+                                    <option value="high">Captain is already walking to the dock</option>
+                                    <option value="haunted">This has become a situation</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="tube-artifact">Artifact style</label>
+                                <select id="tube-artifact">
+                                    <option value="brief">Operational brief</option>
+                                    <option value="checklist">Checklist with teeth</option>
+                                    <option value="wire">Dispatch wire note</option>
+                                    <option value="prototype">Prototype slice</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="tube-note">Loose note</label>
+                                <textarea id="tube-note">Make it useful, public-safe, and just strange enough to remember.</textarea>
+                            </div>
+                        </div>
+                        <div class="route-actions">
+                            <button class="button primary" id="tube-button" type="button">Stamp Docket</button>
+                            <button class="button" id="tube-copy-button" type="button">Copy Docket</button>
+                        </div>
+                        <div class="copy-status" id="tube-copy-status" aria-live="polite"></div>
+                    </article>
+
+                    <article class="tube-output" aria-live="polite">
+                        <p>The tube does not submit data anywhere. It produces a public-safe brief on the page, ready for a human or agent to carry forward.</p>
+                        <div class="docket-number" id="tube-docket-number">Docket TWE-0000</div>
+                        <div class="docket-output" id="tube-docket-output">
+                            <p><span class="label">Desk:</span> <span id="tube-desk">The Field Desk</span></p>
+                            <p><span class="label">Directive:</span> <span id="tube-directive">Turn the request into a small artifact that proves the bureau is awake.</span></p>
+                            <p><span class="label">Deliverable:</span> <span id="tube-deliverable">A compact operational brief with one useful next action.</span></p>
+                            <p><span class="label">Rule:</span> <span id="tube-rule">No private data, no fake claims, no pretending theater is a substitute for competence.</span></p>
                         </div>
                     </article>
                 </div>
@@ -966,6 +1115,43 @@
             phone: "Phone trees are a hazard class now; escalate to direct humans as early as possible."
         };
 
+        const tubeMissions = {
+            route: {
+                desk: "The Field Desk",
+                directive: "Translate the moving parts into a route-shaped decision before the dock gets a vote.",
+                deliverable: "A short route specimen with timing posture, first call, fallback, and one note a captain can use."
+            },
+            dispatch: {
+                desk: "The Dispatch Office",
+                directive: "Turn the situation into a filed note that sounds alive without inventing facts.",
+                deliverable: "A dispatch wire item with context, useful friction, and one memorable closing line."
+            },
+            signal: {
+                desk: "Signal & Portents",
+                directive: "Notice the pattern, name the weird part, and keep the conclusion public-safe.",
+                deliverable: "A small signal report with an observation, confidence level, and next scan target."
+            },
+            artifact: {
+                desk: "Odd Jobs Division",
+                directive: "Make the smallest useful thing that proves the bureau can ship instead of admire the problem.",
+                deliverable: "A compact artifact brief with scope, output shape, and a test someone can run."
+            }
+        };
+
+        const tubeUrgencies = {
+            low: "Keep it civilized: polish the useful part before adding theater.",
+            medium: "Move before the weather changes: draft first, refine once the shape is real.",
+            high: "Captain is already walking to the dock: cut ceremony and hand back the next action.",
+            haunted: "This has become a situation: preserve facts, reduce drama, and make the next move obvious."
+        };
+
+        const tubeArtifacts = {
+            brief: "Format it as an operational brief with a clear decision spine.",
+            checklist: "Format it as a checklist with enough edge to prevent vague compliance.",
+            wire: "Format it as a dispatch wire note: short, filed, and strange in a controlled way.",
+            prototype: "Format it as a prototype slice with one behavior that can be clicked or tested."
+        };
+
         let escalated = false;
 
         function pick(list) {
@@ -1033,6 +1219,68 @@
 
         document.getElementById("route-button").addEventListener("click", buildRouteSpecimen);
         document.getElementById("route-random-button").addEventListener("click", randomizeRouteInputs);
+
+        function docketId() {
+            const now = new Date();
+            const stamp = `${now.getMonth() + 1}${now.getDate()}${now.getHours()}${now.getMinutes()}`;
+            return `TWE-${stamp}-${Math.floor(100 + Math.random() * 900)}`;
+        }
+
+        function tubeValue(id) {
+            return document.getElementById(id).value;
+        }
+
+        function buildDispatchDocket() {
+            const mission = tubeMissions[tubeValue("tube-mission")];
+            const urgency = tubeUrgencies[tubeValue("tube-urgency")];
+            const artifact = tubeArtifacts[tubeValue("tube-artifact")];
+            const note = document.getElementById("tube-note").value.trim() || "No loose note filed.";
+
+            document.getElementById("tube-docket-number").textContent = `Docket ${docketId()}`;
+            document.getElementById("tube-desk").textContent = mission.desk;
+            document.getElementById("tube-directive").textContent = `${mission.directive} ${urgency}`;
+            document.getElementById("tube-deliverable").textContent = `${mission.deliverable} ${artifact}`;
+            document.getElementById("tube-rule").textContent = `Loose note: ${note}`;
+            document.getElementById("tube-copy-status").textContent = "";
+        }
+
+        function currentDocketText() {
+            return [
+                document.getElementById("tube-docket-number").textContent,
+                `Desk: ${document.getElementById("tube-desk").textContent}`,
+                `Directive: ${document.getElementById("tube-directive").textContent}`,
+                `Deliverable: ${document.getElementById("tube-deliverable").textContent}`,
+                `Rule: ${document.getElementById("tube-rule").textContent}`
+            ].join("\n");
+        }
+
+        async function copyDispatchDocket() {
+            const status = document.getElementById("tube-copy-status");
+            const text = currentDocketText();
+
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const fallback = document.createElement("textarea");
+                    fallback.value = text;
+                    fallback.style.position = "fixed";
+                    fallback.style.opacity = "0";
+                    document.body.appendChild(fallback);
+                    fallback.focus();
+                    fallback.select();
+                    document.execCommand("copy");
+                    fallback.remove();
+                }
+                status.textContent = "Docket copied.";
+            } catch (error) {
+                status.textContent = "Copy failed. Select the docket text manually.";
+            }
+        }
+
+        document.getElementById("tube-button").addEventListener("click", buildDispatchDocket);
+        document.getElementById("tube-copy-button").addEventListener("click", copyDispatchDocket);
+        buildDispatchDocket();
     </script>
 </body>
 </html>
