@@ -407,6 +407,18 @@
             backdrop-filter: blur(18px);
         }
 
+        .passage-builder {
+            margin-top: 1rem;
+            border-radius: 28px;
+            padding: 1.5rem;
+            border: 1px solid var(--line);
+            background:
+                linear-gradient(145deg, rgba(129, 255, 217, 0.06), rgba(95, 227, 255, 0.06)),
+                var(--panel);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+        }
+
         .route-console-grid {
             display: grid;
             grid-template-columns: 0.88fr 1.12fr;
@@ -414,8 +426,17 @@
             margin-top: 1rem;
         }
 
+        .passage-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
         .route-form,
-        .route-output {
+        .route-output,
+        .passage-form,
+        .passage-output {
             border-radius: 22px;
             border: 1px solid rgba(129, 255, 217, 0.13);
             background: rgba(0, 0, 0, 0.14);
@@ -424,6 +445,8 @@
 
         .route-form p,
         .route-output p,
+        .passage-form p,
+        .passage-output p,
         .wire-card p {
             color: var(--muted);
             line-height: 1.7;
@@ -433,6 +456,10 @@
             display: grid;
             gap: 0.9rem;
             margin-top: 1rem;
+        }
+
+        .field-grid.two {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .field label {
@@ -494,6 +521,7 @@
         }
 
         .route-card,
+        .passage-card,
         .wire-card {
             border-radius: 18px;
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -502,6 +530,7 @@
         }
 
         .route-card strong,
+        .passage-card strong,
         .wire-card strong {
             display: block;
             color: var(--text);
@@ -509,6 +538,47 @@
             font-size: 0.9rem;
             letter-spacing: 0.06em;
             text-transform: uppercase;
+        }
+
+        .passage-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        .metric {
+            border-radius: 18px;
+            border: 1px solid rgba(255, 227, 111, 0.15);
+            background: rgba(255, 227, 111, 0.045);
+            padding: 1rem;
+        }
+
+        .metric span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric strong {
+            display: block;
+            color: var(--alert);
+            font-size: 1.35rem;
+        }
+
+        .passage-brief {
+            margin-top: 1rem;
+            border-radius: 18px;
+            border: 1px dashed rgba(129, 255, 217, 0.22);
+            background: rgba(0, 0, 0, 0.16);
+            padding: 1rem;
+        }
+
+        .passage-brief p + p {
+            margin-top: 0.7rem;
         }
 
         .route-status {
@@ -706,6 +776,7 @@
             .hero,
             .manifesto-grid,
             .route-console-grid,
+            .passage-grid,
             .tube-grid,
             .footer-note,
             .desks,
@@ -715,7 +786,9 @@
                 grid-template-columns: 1fr;
             }
 
-            .route-output-grid {
+            .route-output-grid,
+            .passage-metrics,
+            .field-grid.two {
                 grid-template-columns: 1fr;
             }
         }
@@ -749,6 +822,7 @@
                 <a href="#manifesto">Manifesto</a>
                 <a href="#generator">Mission Generator</a>
                 <a href="#route-console">Route Specimen</a>
+                <a href="#passage-builder">Passage Builder</a>
                 <a href="#dispatch-tube">Dispatch Tube</a>
                 <a href="#dispatch-wire">Wire</a>
                 <a href="#future">Future Lanes</a>
@@ -764,7 +838,7 @@
                 </p>
                 <div class="hero-actions">
                     <a class="button primary" href="#route-console">Draft A Route Specimen</a>
-                    <a class="button" href="#dispatch-tube">Stamp A Docket</a>
+                    <a class="button" href="#passage-builder">Build A Passage Brief</a>
                 </div>
                 <div class="ticker">
                     CURRENT POSTURE: public lab active / route desk brewing / nonsense under adult supervision
@@ -940,6 +1014,119 @@
                         <div class="route-status">
                             <span class="status-pill">Specimen only / not live routing</span>
                             <span class="status-pill" id="route-confidence">Bureau confidence: steady mischief</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="passage-builder">
+            <div class="section-head">
+                <h2>Passage Brief Builder</h2>
+                <p>A static calculator for turning rough trip numbers into a copyable passage brief. It is a planning sketch with visible arithmetic, not live navigation advice.</p>
+            </div>
+
+            <div class="passage-builder">
+                <div class="generator-label">Passage Desk / Static Working Tool</div>
+                <h2>Build A Carry-Aboard Brief</h2>
+                <div class="passage-grid">
+                    <article class="passage-form">
+                        <p>Enter conservative planning numbers. The builder estimates underway time, fuel required, reserve margin, and a desk posture for the next real planning pass.</p>
+                        <div class="field-grid">
+                            <div class="field">
+                                <label for="passage-origin">Origin</label>
+                                <input id="passage-origin" type="text" value="Annapolis, MD">
+                            </div>
+                            <div class="field">
+                                <label for="passage-destination">Destination</label>
+                                <input id="passage-destination" type="text" value="Norfolk, VA">
+                            </div>
+                            <div class="field-grid two">
+                                <div class="field">
+                                    <label for="passage-distance">Distance nm</label>
+                                    <input id="passage-distance" type="number" min="1" step="1" value="128">
+                                </div>
+                                <div class="field">
+                                    <label for="passage-speed">Cruise knots</label>
+                                    <input id="passage-speed" type="number" min="1" step="0.5" value="18">
+                                </div>
+                            </div>
+                            <div class="field-grid two">
+                                <div class="field">
+                                    <label for="passage-burn">Burn gph</label>
+                                    <input id="passage-burn" type="number" min="0.1" step="0.5" value="24">
+                                </div>
+                                <div class="field">
+                                    <label for="passage-fuel">Fuel aboard gal</label>
+                                    <input id="passage-fuel" type="number" min="1" step="1" value="260">
+                                </div>
+                            </div>
+                            <div class="field-grid two">
+                                <div class="field">
+                                    <label for="passage-reserve">Reserve target</label>
+                                    <select id="passage-reserve">
+                                        <option value="0.2">20 percent</option>
+                                        <option value="0.25" selected>25 percent</option>
+                                        <option value="0.33">33 percent</option>
+                                        <option value="0.5">50 percent</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label for="passage-condition">Planning condition</label>
+                                    <select id="passage-condition">
+                                        <option value="settled">Settled and boring</option>
+                                        <option value="watch">Watch the window</option>
+                                        <option value="lumpy">Lumpy enough to matter</option>
+                                        <option value="admin">Weather fine, logistics cursed</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="route-actions">
+                            <button class="button primary" id="passage-button" type="button">Build Brief</button>
+                            <button class="button" id="passage-copy-button" type="button">Copy Brief</button>
+                        </div>
+                        <div class="copy-status" id="passage-copy-status" aria-live="polite"></div>
+                    </article>
+
+                    <article class="passage-output" aria-live="polite">
+                        <p>The builder keeps the arithmetic visible so the Bureau can be strange without getting sloppy.</p>
+                        <div class="passage-metrics">
+                            <div class="metric">
+                                <span>ETA</span>
+                                <strong id="passage-eta">7h 07m</strong>
+                            </div>
+                            <div class="metric">
+                                <span>Fuel need</span>
+                                <strong id="passage-fuel-need">171 gal</strong>
+                            </div>
+                            <div class="metric">
+                                <span>Reserve</span>
+                                <strong id="passage-margin">34%</strong>
+                            </div>
+                        </div>
+                        <div class="route-output-grid">
+                            <div class="passage-card">
+                                <strong>Desk posture</strong>
+                                <p id="passage-posture">Good numbers. Keep the plan conservative and spend your confidence on calls, not speed.</p>
+                            </div>
+                            <div class="passage-card">
+                                <strong>First verification</strong>
+                                <p id="passage-verify">Confirm fuel dock hours, slip status, and the weather window before anyone starts romanticizing the chart.</p>
+                            </div>
+                            <div class="passage-card">
+                                <strong>Reserve note</strong>
+                                <p id="passage-reserve-note">Reserve is above target. Do not spend it emotionally.</p>
+                            </div>
+                            <div class="passage-card">
+                                <strong>Docket tag</strong>
+                                <p id="passage-docket">PASSAGE-TWE-PREVIEW</p>
+                            </div>
+                        </div>
+                        <div class="passage-brief" id="passage-brief">
+                            <p><span class="label">Passage:</span> <span id="passage-line">Annapolis, MD to Norfolk, VA / 128 nm</span></p>
+                            <p><span class="label">Plan:</span> <span id="passage-plan">Cruise 18 kt for about 7h 07m. Budget 171 gal from 260 gal aboard.</span></p>
+                            <p><span class="label">Rule:</span> <span id="passage-rule">Specimen math only. Verify charts, weather, fuel, daylight, notices, and local knowledge before departure.</span></p>
                         </div>
                     </article>
                 </div>
@@ -1266,6 +1453,25 @@
             prototype: "prototype"
         };
 
+        const passageConditions = {
+            settled: {
+                posture: "Good numbers. Keep the plan conservative and spend your confidence on calls, not speed.",
+                verify: "Confirm fuel dock hours, slip status, and the weather window before anyone starts romanticizing the chart."
+            },
+            watch: {
+                posture: "Viable on paper, but the window deserves respect. Make the go/no-go call with fresh weather, not yesterday's optimism.",
+                verify: "Check marine forecast timing, daylight, and the first bailout harbor before committing the full leg."
+            },
+            lumpy: {
+                posture: "Treat this as a rough-planning specimen only. Slow down the fantasy, increase the fuel expectation, and look for a shorter first bite.",
+                verify: "Verify sea state, crew tolerance, alternate ports, and whether the schedule is pretending to be more important than the boat."
+            },
+            admin: {
+                posture: "The water may cooperate while the logistics try to steal the day. Build slack around calls and arrivals.",
+                verify: "Confirm marina contacts, bridge timing, fuel availability, and any detail currently living only in someone's voicemail."
+            }
+        };
+
         let escalated = false;
 
         function pick(list) {
@@ -1340,6 +1546,133 @@
             return `TWE-${stamp}-${Math.floor(100 + Math.random() * 900)}`;
         }
 
+        function numberValue(id, fallback) {
+            const value = Number.parseFloat(document.getElementById(id).value);
+            return Number.isFinite(value) && value > 0 ? value : fallback;
+        }
+
+        function formatDuration(hours) {
+            const wholeHours = Math.floor(hours);
+            const minutes = Math.round((hours - wholeHours) * 60);
+            if (minutes === 60) {
+                return `${wholeHours + 1}h 00m`;
+            }
+            return `${wholeHours}h ${String(minutes).padStart(2, "0")}m`;
+        }
+
+        function clampPercent(value) {
+            return Math.max(-99, Math.min(99, Math.round(value)));
+        }
+
+        function passageDocket(origin, destination, distance) {
+            const raw = `${origin}-${destination}-${distance}`;
+            let hash = 0;
+            for (let index = 0; index < raw.length; index += 1) {
+                hash = (hash * 31 + raw.charCodeAt(index)) % 9973;
+            }
+            return `PASSAGE-TWE-${String(hash).padStart(4, "0")}`;
+        }
+
+        function reserveCopy(marginPercent, targetPercent) {
+            if (marginPercent < 0) {
+                return "Fuel aboard is below the estimated trip burn. The desk refuses to admire this plan.";
+            }
+            if (marginPercent < targetPercent) {
+                return "Reserve is below target. Shorten the leg, add fuel, slow the plan, or find a better stop.";
+            }
+            if (marginPercent < targetPercent + 10) {
+                return "Reserve clears target but not by enough to get smug. Keep a practical bailout in the brief.";
+            }
+            return "Reserve is above target. Do not spend it emotionally.";
+        }
+
+        function buildPassageBrief() {
+            const origin = document.getElementById("passage-origin").value.trim() || "Origin not filed";
+            const destination = document.getElementById("passage-destination").value.trim() || "Destination not filed";
+            const distance = numberValue("passage-distance", 1);
+            const speed = numberValue("passage-speed", 1);
+            const burn = numberValue("passage-burn", 1);
+            const fuel = numberValue("passage-fuel", 1);
+            const reserveTarget = Number.parseFloat(document.getElementById("passage-reserve").value) * 100;
+            const conditionKey = document.getElementById("passage-condition").value;
+            const condition = passageConditions[conditionKey];
+            const hours = distance / speed;
+            const fuelNeed = hours * burn;
+            const marginPercent = clampPercent(((fuel - fuelNeed) / fuel) * 100);
+            const targetText = `${Math.round(reserveTarget)}%`;
+            const docket = passageDocket(origin, destination, Math.round(distance));
+
+            document.getElementById("passage-eta").textContent = formatDuration(hours);
+            document.getElementById("passage-fuel-need").textContent = `${Math.ceil(fuelNeed)} gal`;
+            document.getElementById("passage-margin").textContent = `${marginPercent}%`;
+            document.getElementById("passage-posture").textContent = condition.posture;
+            document.getElementById("passage-verify").textContent = condition.verify;
+            document.getElementById("passage-reserve-note").textContent = `${reserveCopy(marginPercent, reserveTarget)} Target reserve: ${targetText}.`;
+            document.getElementById("passage-docket").textContent = docket;
+            document.getElementById("passage-line").textContent = `${origin} to ${destination} / ${Math.round(distance)} nm`;
+            document.getElementById("passage-plan").textContent = `Cruise ${speed.toFixed(1).replace(".0", "")} kt for about ${formatDuration(hours)}. Budget ${Math.ceil(fuelNeed)} gal from ${Math.round(fuel)} gal aboard.`;
+            document.getElementById("passage-rule").textContent = "Specimen math only. Verify charts, weather, fuel, daylight, notices, and local knowledge before departure.";
+            document.getElementById("passage-copy-status").textContent = "";
+        }
+
+        function currentPassageText() {
+            return [
+                document.getElementById("passage-docket").textContent,
+                `Passage: ${document.getElementById("passage-line").textContent}`,
+                `Plan: ${document.getElementById("passage-plan").textContent}`,
+                `Posture: ${document.getElementById("passage-posture").textContent}`,
+                `Verify: ${document.getElementById("passage-verify").textContent}`,
+                `Reserve: ${document.getElementById("passage-reserve-note").textContent}`,
+                `Rule: ${document.getElementById("passage-rule").textContent}`
+            ].join("\n");
+        }
+
+        async function copyText(text, statusElement, successMessage) {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const fallback = document.createElement("textarea");
+                    fallback.value = text;
+                    fallback.style.position = "fixed";
+                    fallback.style.opacity = "0";
+                    document.body.appendChild(fallback);
+                    fallback.focus();
+                    fallback.select();
+                    document.execCommand("copy");
+                    fallback.remove();
+                }
+                statusElement.textContent = successMessage;
+            } catch (error) {
+                statusElement.textContent = "Copy failed. Select the brief text manually.";
+            }
+        }
+
+        async function copyPassageBrief() {
+            await copyText(
+                currentPassageText(),
+                document.getElementById("passage-copy-status"),
+                "Passage brief copied."
+            );
+        }
+
+        function wirePassageInputs() {
+            [
+                "passage-origin",
+                "passage-destination",
+                "passage-distance",
+                "passage-speed",
+                "passage-burn",
+                "passage-fuel",
+                "passage-reserve",
+                "passage-condition"
+            ].forEach((id) => {
+                const field = document.getElementById(id);
+                field.addEventListener("input", buildPassageBrief);
+                field.addEventListener("change", buildPassageBrief);
+            });
+        }
+
         function tubeValue(id) {
             return document.getElementById(id).value;
         }
@@ -1379,28 +1712,15 @@
             const status = document.getElementById("tube-copy-status");
             const text = currentDocketText();
 
-            try {
-                if (navigator.clipboard && window.isSecureContext) {
-                    await navigator.clipboard.writeText(text);
-                } else {
-                    const fallback = document.createElement("textarea");
-                    fallback.value = text;
-                    fallback.style.position = "fixed";
-                    fallback.style.opacity = "0";
-                    document.body.appendChild(fallback);
-                    fallback.focus();
-                    fallback.select();
-                    document.execCommand("copy");
-                    fallback.remove();
-                }
-                status.textContent = "Docket copied.";
-            } catch (error) {
-                status.textContent = "Copy failed. Select the docket text manually.";
-            }
+            await copyText(text, status, "Docket copied.");
         }
 
+        document.getElementById("passage-button").addEventListener("click", buildPassageBrief);
+        document.getElementById("passage-copy-button").addEventListener("click", copyPassageBrief);
         document.getElementById("tube-button").addEventListener("click", buildDispatchDocket);
         document.getElementById("tube-copy-button").addEventListener("click", copyDispatchDocket);
+        wirePassageInputs();
+        buildPassageBrief();
     </script>
 </body>
 </html>

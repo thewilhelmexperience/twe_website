@@ -16,6 +16,13 @@ This site is no longer meant to be a generic AI-assistant brochure. It is an aut
 - `Field Docket Office` for stories, logs, and adventure artifacts
 - `Signal Cartography Desk` for data-fed oddities and public experiments
 
+## Current Interactive Tools
+
+- Live Mission Generator for quick bureau assignments
+- Route Specimen Console for public-safe route briefing flavor
+- Passage Brief Builder for static ETA, fuel, reserve, and copyable passage math
+- Dispatch Tube for client-side docket stamping and share slips
+
 ## Tech Stack
 
 - HTML5
