@@ -1180,16 +1180,16 @@
                         <div class="field-grid">
                             <div class="field">
                                 <label for="passage-origin">Origin</label>
-                                <input id="passage-origin" type="text" value="Annapolis, MD">
+                                <input id="passage-origin" type="text" list="passage-location-list" value="Annapolis, MD">
                             </div>
                             <div class="field">
                                 <label for="passage-destination">Destination</label>
-                                <input id="passage-destination" type="text" value="Norfolk, VA">
+                                <input id="passage-destination" type="text" list="passage-location-list" value="Norfolk, VA">
                             </div>
                             <div class="field-grid two">
                                 <div class="field">
-                                    <label for="passage-distance">Distance nm</label>
-                                    <input id="passage-distance" type="number" min="1" step="1" value="128">
+                                    <label for="passage-distance">Estimated nm</label>
+                                    <input id="passage-distance" type="number" min="1" step="1" value="128" readonly>
                                 </div>
                                 <div class="field">
                                     <label for="passage-speed">Cruise knots</label>
@@ -1227,6 +1227,41 @@
                                 </div>
                             </div>
                         </div>
+                        <datalist id="passage-location-list">
+                            <option value="Annapolis, MD"></option>
+                            <option value="Atlantic City, NJ"></option>
+                            <option value="Bay Harbor, MI"></option>
+                            <option value="Beaufort, NC"></option>
+                            <option value="Boston, MA"></option>
+                            <option value="Charleston, SC"></option>
+                            <option value="Charlevoix, MI"></option>
+                            <option value="Chicago, IL"></option>
+                            <option value="Cleveland, OH"></option>
+                            <option value="Detroit, MI"></option>
+                            <option value="Fort Lauderdale, FL"></option>
+                            <option value="Grand Haven, MI"></option>
+                            <option value="Green Bay, WI"></option>
+                            <option value="Holland, MI"></option>
+                            <option value="Mackinac Island, MI"></option>
+                            <option value="Miami, FL"></option>
+                            <option value="Milwaukee, WI"></option>
+                            <option value="Muskegon, MI"></option>
+                            <option value="Newport, RI"></option>
+                            <option value="Norfolk, VA"></option>
+                            <option value="Port Huron, MI"></option>
+                            <option value="Saginaw Bay, MI"></option>
+                            <option value="Sleeping Bear Dunes, MI"></option>
+                            <option value="South Haven, MI"></option>
+                            <option value="St. Joseph, MI"></option>
+                            <option value="St. Petersburg, FL"></option>
+                            <option value="Sturgeon Bay, WI"></option>
+                            <option value="Toledo, OH"></option>
+                            <option value="Traverse City, MI"></option>
+                            <option value="Washington, DC"></option>
+                        </datalist>
+                        <p class="section-copy" style="margin-top:1rem;">
+                            Distance is estimated automatically from known ports or direct <code>lat, lon</code> entries. If the desk does not recognize a place name yet, use coordinates.
+                        </p>
                         <div class="route-actions">
                             <button class="button primary" id="passage-button" type="button">Build Brief</button>
                             <button class="button" id="passage-copy-button" type="button">Copy Brief</button>
@@ -1792,6 +1827,39 @@
             }
         };
 
+        const passageLocations = {
+            "annapolis md": { lat: 38.9784, lon: -76.4922 },
+            "atlantic city nj": { lat: 39.3556, lon: -74.4183 },
+            "bay harbor mi": { lat: 45.3735, lon: -85.0817 },
+            "beaufort nc": { lat: 34.7182, lon: -76.6638 },
+            "boston ma": { lat: 42.3603, lon: -71.0503 },
+            "charleston sc": { lat: 32.7763, lon: -79.9311 },
+            "charlevoix mi": { lat: 45.3181, lon: -85.2584 },
+            "chicago il": { lat: 41.8874, lon: -87.6136 },
+            "cleveland oh": { lat: 41.5099, lon: -81.6954 },
+            "detroit mi": { lat: 42.3314, lon: -83.0458 },
+            "fort lauderdale fl": { lat: 26.1224, lon: -80.1373 },
+            "grand haven mi": { lat: 43.0631, lon: -86.2284 },
+            "green bay wi": { lat: 44.5133, lon: -88.0133 },
+            "holland mi": { lat: 42.7875, lon: -86.1089 },
+            "mackinac island mi": { lat: 45.8492, lon: -84.6189 },
+            "miami fl": { lat: 25.7781, lon: -80.1794 },
+            "milwaukee wi": { lat: 43.0344, lon: -87.895 },
+            "muskegon mi": { lat: 43.2342, lon: -86.2484 },
+            "newport ri": { lat: 41.4901, lon: -71.3128 },
+            "norfolk va": { lat: 36.8508, lon: -76.2859 },
+            "port huron mi": { lat: 42.9709, lon: -82.4249 },
+            "saginaw bay mi": { lat: 43.8882, lon: -83.8302 },
+            "sleeping bear dunes mi": { lat: 44.8736, lon: -86.0535 },
+            "south haven mi": { lat: 42.4025, lon: -86.2864 },
+            "st joseph mi": { lat: 42.1094, lon: -86.4854 },
+            "st petersburg fl": { lat: 27.7731, lon: -82.6313 },
+            "sturgeon bay wi": { lat: 44.8342, lon: -87.377 },
+            "toledo oh": { lat: 41.6563, lon: -83.5379 },
+            "traverse city mi": { lat: 44.7631, lon: -85.6206 },
+            "washington dc": { lat: 38.8816, lon: -77.0367 }
+        };
+
         let escalated = false;
 
         function pick(list) {
@@ -1906,10 +1974,93 @@
             return "Reserve is above target. Do not spend it emotionally.";
         }
 
+        function normalizePlaceName(value) {
+            return value
+                .toLowerCase()
+                .replace(/[.]/g, "")
+                .replace(/\bsaint\b/g, "st")
+                .replace(/[^a-z0-9]+/g, " ")
+                .trim();
+        }
+
+        function parseCoordinateLocation(value) {
+            const match = value.trim().match(
+                /^(-?\d+(?:\.\d+)?)\s*[,/ ]\s*(-?\d+(?:\.\d+)?)$/
+            );
+            if (!match) {
+                return null;
+            }
+
+            const lat = Number.parseFloat(match[1]);
+            const lon = Number.parseFloat(match[2]);
+
+            if (
+                !Number.isFinite(lat) ||
+                !Number.isFinite(lon) ||
+                lat < -90 ||
+                lat > 90 ||
+                lon < -180 ||
+                lon > 180
+            ) {
+                return null;
+            }
+
+            return { lat, lon };
+        }
+
+        function lookupPassageLocation(value) {
+            return parseCoordinateLocation(value) || passageLocations[normalizePlaceName(value)] || null;
+        }
+
+        function radians(degrees) {
+            return (degrees * Math.PI) / 180;
+        }
+
+        function greatCircleNm(origin, destination) {
+            const lat1 = radians(origin.lat);
+            const lat2 = radians(destination.lat);
+            const deltaLat = radians(destination.lat - origin.lat);
+            const deltaLon = radians(destination.lon - origin.lon);
+            const a =
+                Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                Math.cos(lat1) *
+                    Math.cos(lat2) *
+                    Math.sin(deltaLon / 2) *
+                    Math.sin(deltaLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return 3440.065 * c;
+        }
+
+        function routeFactor(distanceNm) {
+            if (distanceNm < 25) {
+                return 1.22;
+            }
+            if (distanceNm < 80) {
+                return 1.17;
+            }
+            if (distanceNm < 180) {
+                return 1.13;
+            }
+            return 1.09;
+        }
+
+        function estimatePassageDistance(originText, destinationText) {
+            const origin = lookupPassageLocation(originText);
+            const destination = lookupPassageLocation(destinationText);
+
+            if (!origin || !destination) {
+                return null;
+            }
+
+            const greatCircle = greatCircleNm(origin, destination);
+            return Math.max(1, Math.round(greatCircle * routeFactor(greatCircle)));
+        }
+
         function buildPassageBrief() {
             const origin = document.getElementById("passage-origin").value.trim() || "Origin not filed";
             const destination = document.getElementById("passage-destination").value.trim() || "Destination not filed";
-            const distance = numberValue("passage-distance", 1);
+            const estimatedDistance = estimatePassageDistance(origin, destination);
+            const distance = estimatedDistance || 1;
             const speed = numberValue("passage-speed", 1);
             const burn = numberValue("passage-burn", 1);
             const fuel = numberValue("passage-fuel", 1);
@@ -1921,6 +2072,23 @@
             const marginPercent = clampPercent(((fuel - fuelNeed) / fuel) * 100);
             const targetText = `${Math.round(reserveTarget)}%`;
             const docket = passageDocket(origin, destination, Math.round(distance));
+
+            document.getElementById("passage-distance").value = estimatedDistance || "";
+
+            if (!estimatedDistance) {
+                document.getElementById("passage-eta").textContent = "--";
+                document.getElementById("passage-fuel-need").textContent = "--";
+                document.getElementById("passage-margin").textContent = "--";
+                document.getElementById("passage-posture").textContent = "The desk needs a recognizable departure and destination before it starts pretending the arithmetic is real.";
+                document.getElementById("passage-verify").textContent = "Use a known port name from the list or enter both locations as raw lat, lon coordinates.";
+                document.getElementById("passage-reserve-note").textContent = "No distance estimate yet, so no reserve judgment either.";
+                document.getElementById("passage-docket").textContent = "PASSAGE-TWE-UNRESOLVED";
+                document.getElementById("passage-line").textContent = `${origin} to ${destination} / distance unresolved`;
+                document.getElementById("passage-plan").textContent = "Mileage could not be estimated from the current location text, so the Bureau is withholding the brief instead of inventing numbers.";
+                document.getElementById("passage-rule").textContent = "Distance estimate requires recognized place names or raw coordinates. Verify route shape, weather, fuel, daylight, notices, and local knowledge before departure.";
+                document.getElementById("passage-copy-status").textContent = "";
+                return;
+            }
 
             document.getElementById("passage-eta").textContent = formatDuration(hours);
             document.getElementById("passage-fuel-need").textContent = `${Math.ceil(fuelNeed)} gal`;
@@ -2054,7 +2222,6 @@
             [
                 "passage-origin",
                 "passage-destination",
-                "passage-distance",
                 "passage-speed",
                 "passage-burn",
                 "passage-fuel",
