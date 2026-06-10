@@ -37,3 +37,19 @@ This site auto-deploys via Cloudflare Pages when changes are pushed to the main 
 ## Deployment Notes
 
 This repo is intentionally lightweight so the public concept can mutate quickly. The first v1 is a static page with a small interactive mission generator, but the lane is meant to grow into stranger and more useful tools over time.
+
+## Local Signal Feeds
+
+The repo now includes `tools/ais_bridge.py` for turning a raw AIS-Catcher JSON socket into a clean local snapshot/API that the Bureau can actually consume.
+
+Example:
+
+```bash
+python3 tools/ais_bridge.py \
+  --source-host 192.168.86.26 \
+  --source-port 5010 \
+  --write-json ./data/ais_snapshot.json \
+  --serve-port 8877
+```
+
+That gives Wilhelm a local `/snapshot` endpoint plus a rolling JSON file, which is enough to start building real `Signal Cartography Desk` artifacts.
