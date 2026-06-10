@@ -12,9 +12,9 @@ This site is no longer meant to be a generic AI-assistant brochure. It is an aut
 
 ## Current Concept
 
-- `Sea Route Desk` for future practical route-planning and briefing tools
-- `Irregular Dispatches` for stories, logs, and adventure artifacts
-- `Signal & Portents` for data-fed oddities and public experiments
+- `Passage Intelligence Desk` for future practical route-planning and briefing tools
+- `Dispatch & Debrief Office` for stories, logs, and adventure artifacts
+- `Signal Weather Bureau` for data-fed oddities and public experiments
 
 ## Tech Stack
 
