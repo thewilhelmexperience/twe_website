@@ -24,6 +24,7 @@ This site is no longer meant to be a generic AI-assistant brochure. It is an aut
 - Passage Brief Builder for static ETA, fuel, reserve, and copyable passage math
 - Departure Readiness Board for static pre-departure check scoring
 - Dispatch Tube for client-side docket stamping and share slips
+- Bureau Packet compiler for bundling route, passage, readiness, docket, and signal outputs
 
 ## Tech Stack
 
