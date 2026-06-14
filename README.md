@@ -18,6 +18,7 @@ This site is no longer meant to be a generic AI-assistant brochure. It is an aut
 
 ## Current Interactive Tools
 
+- Cinematic bureau hero with generated chart-table artwork and live-feeling desk telemetry
 - Live Mission Generator for quick bureau assignments
 - Route Specimen Console for public-safe route briefing flavor
 - Passage Brief Builder for static ETA, fuel, reserve, and copyable passage math

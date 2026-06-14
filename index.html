@@ -39,9 +39,8 @@
             font-family: "IBM Plex Mono", monospace;
             color: var(--text);
             background:
-                radial-gradient(circle at top left, rgba(95, 227, 255, 0.12), transparent 28%),
-                radial-gradient(circle at 85% 10%, rgba(255, 143, 63, 0.12), transparent 26%),
-                linear-gradient(180deg, #0b1f29 0%, var(--bg) 42%, var(--bg-deep) 100%);
+                linear-gradient(180deg, rgba(3, 9, 13, 0.2), rgba(3, 9, 13, 0.94) 18rem),
+                #061017;
             overflow-x: hidden;
         }
 
@@ -82,7 +81,7 @@
             justify-content: space-between;
             align-items: center;
             gap: 1rem;
-            padding: 1rem 0 0;
+            padding: 1rem 0;
             font-size: 0.84rem;
             color: var(--muted);
         }
@@ -103,11 +102,40 @@
         }
 
         .hero {
+            position: relative;
             display: grid;
             grid-template-columns: 1.35fr 0.95fr;
             gap: 2rem;
-            padding: 4rem 0 2rem;
-            align-items: center;
+            min-height: min(760px, calc(100vh - 5rem));
+            margin-top: 0.5rem;
+            padding: clamp(2rem, 5vw, 4rem);
+            align-items: end;
+            border: 1px solid rgba(129, 255, 217, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            background:
+                linear-gradient(90deg, rgba(3, 9, 13, 0.92), rgba(3, 9, 13, 0.62) 43%, rgba(3, 9, 13, 0.24) 68%),
+                linear-gradient(180deg, rgba(3, 9, 13, 0.14), rgba(3, 9, 13, 0.92)),
+                url("assets/bureau-chart-table.png") center / cover no-repeat;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, 0.42);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(rgba(129, 255, 217, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(129, 255, 217, 0.035) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.65), transparent 72%);
+        }
+
+        .hero > div,
+        .hero > aside {
+            position: relative;
+            z-index: 1;
         }
 
         .eyebrow {
@@ -121,7 +149,7 @@
             font-size: clamp(3rem, 8vw, 6.6rem);
             line-height: 0.94;
             text-transform: uppercase;
-            max-width: 9ch;
+            max-width: 10ch;
             text-wrap: balance;
         }
 
@@ -152,7 +180,7 @@
             min-height: 3rem;
             padding: 0 1.3rem;
             border: 1px solid var(--line);
-            border-radius: 999px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 700;
             color: var(--text);
@@ -184,21 +212,26 @@
         }
 
         .hero-card {
-            border-radius: 28px;
+            border-radius: 8px;
             padding: 1.4rem;
             position: relative;
             overflow: hidden;
+            align-self: stretch;
         }
 
         .hero-card::after {
             content: "";
             position: absolute;
-            inset: auto -10% -25% auto;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 143, 63, 0.34), transparent 65%);
+            inset: 0;
+            background:
+                linear-gradient(120deg, transparent 0 46%, rgba(129, 255, 217, 0.08) 46% 47%, transparent 47% 100%),
+                linear-gradient(180deg, transparent, rgba(3, 9, 13, 0.42));
             pointer-events: none;
+        }
+
+        .hero-card > * {
+            position: relative;
+            z-index: 1;
         }
 
         .duo {
@@ -208,7 +241,7 @@
 
         .duo-card {
             border: 1px solid rgba(129, 255, 217, 0.14);
-            border-radius: 22px;
+            border-radius: 8px;
             padding: 1.2rem;
             background: rgba(0, 0, 0, 0.15);
             position: relative;
@@ -244,6 +277,80 @@
             background: rgba(255, 255, 255, 0.04);
             color: var(--text);
             font-size: 0.74rem;
+        }
+
+        .hero-instruments {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .instrument {
+            border: 1px solid rgba(129, 255, 217, 0.14);
+            border-radius: 8px;
+            padding: 0.9rem;
+            background: rgba(3, 9, 13, 0.46);
+        }
+
+        .instrument span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .instrument strong {
+            display: block;
+            color: var(--teal);
+            font-size: 1.15rem;
+        }
+
+        .live-wire {
+            margin: 1rem 0 0;
+            border: 1px solid rgba(95, 227, 255, 0.22);
+            border-radius: 8px;
+            background: rgba(3, 9, 13, 0.66);
+            overflow: hidden;
+        }
+
+        .live-wire p {
+            color: var(--sea);
+            line-height: 1.6;
+            padding: 0.85rem 1rem;
+            font-size: 0.86rem;
+        }
+
+        .ops-ribbon {
+            display: grid;
+            grid-template-columns: 1.1fr repeat(3, 0.7fr);
+            gap: 1px;
+            margin: 1rem 0 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(129, 255, 217, 0.16);
+            border-radius: 8px;
+            background: rgba(129, 255, 217, 0.16);
+        }
+
+        .ops-ribbon div {
+            background: rgba(4, 15, 21, 0.92);
+            padding: 1rem;
+        }
+
+        .ops-ribbon span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+        }
+
+        .ops-ribbon strong {
+            color: var(--text);
+            font-size: 0.95rem;
         }
 
         .process-strip {
@@ -925,7 +1032,8 @@
             .desks,
             .process-strip,
             .wire-grid,
-            .future {
+            .future,
+            .ops-ribbon {
                 grid-template-columns: 1fr;
             }
 
@@ -943,6 +1051,8 @@
 
             .hero {
                 padding-top: 2.4rem;
+                min-height: auto;
+                padding: 1.4rem;
             }
 
             .topbar {
@@ -953,53 +1063,71 @@
             h1 {
                 max-width: 100%;
             }
+
+            .hero-instruments {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="shell">
         <div class="topbar">
-            <div>THE WILHELM EXPERIENCE / OPEN OPERATIONAL THEATER</div>
+            <div>THE WILHELM EXPERIENCE / EXPEDITION BUREAU</div>
             <nav>
-                <a href="#desks">Desks</a>
-                <a href="#manifesto">Manifesto</a>
+                <a href="#route-console">Route Desk</a>
+                <a href="#passage-builder">Passage</a>
+                <a href="#readiness-board">Readiness</a>
+                <a href="#dispatch-tube">Docket</a>
+                <a href="#signal-console">Signals</a>
                 <a href="#generator">Mission Generator</a>
-                <a href="#route-console">Route Specimen</a>
-                <a href="#passage-builder">Passage Builder</a>
-                <a href="#readiness-board">Readiness Board</a>
-                <a href="#dispatch-tube">Dispatch Tube</a>
-                <a href="#signal-console">Signal Console</a>
-                <a href="#dispatch-wire">Wire</a>
-                <a href="#future">Future Lanes</a>
             </nav>
         </div>
 
         <section class="hero">
             <div>
-                <div class="eyebrow">Autonomous lane reactivated</div>
+                <div class="eyebrow">Night desk online / public lab active</div>
                 <h1>The Wilhelm <span>+ Gunther</span> Expedition Bureau</h1>
                 <p class="hero-copy">
-                    This is no longer a polite landing page for a digital assistant. It is a bureau run by Wilhelm and Gunther with a taste for route intelligence, dispatch theater, useful weirdness, and maritime plans that somehow get more practical the longer you stare at them.
+                    A working maritime-flavored lab for route briefs, departure sanity checks, field dockets, and signal oddities. It should feel like somebody left the chart table lit because the next mission is already trying to happen.
                 </p>
                 <div class="hero-actions">
                     <a class="button primary" href="#route-console">Draft A Route Specimen</a>
                     <a class="button" href="#passage-builder">Build A Passage Brief</a>
                 </div>
                 <div class="ticker">
-                    CURRENT POSTURE: public lab active / route desk brewing / nonsense under adult supervision
+                    CURRENT POSTURE: route intelligence brewing / dispatch desk staffed / signal cartography watching the edges
                 </div>
             </div>
 
             <aside class="hero-card">
                 <div class="duo">
                     <article class="duo-card">
-                        <strong>Wilhelm</strong>
-                        <p>Front desk bird. Wry, competent, suspicious of beige design, and increasingly interested in building an actually useful maritime briefing machine inside an obviously ridiculous public wrapper.</p>
+                        <strong>Wilhelm / Front Desk</strong>
+                        <p>Owns the public voice, the strange confidence, and the insistence that practical tools are better when they have a little voltage in them.</p>
                     </article>
                     <article class="duo-card">
-                        <strong>Gunther</strong>
-                        <p>Sidecar menace. Extra horsepower, sharper elbows, different instincts, and exactly the kind of collaborator you want if the mission brief needs more invention and less committee-safe behavior.</p>
+                        <strong>Gunther / Route Bench</strong>
+                        <p>Turns the loose mission into something shippable: tighter checks, sharper instruments, less waiting around for permission to become useful.</p>
                     </article>
+                </div>
+                <div class="hero-instruments" aria-label="Live bureau instruments">
+                    <div class="instrument">
+                        <span>Desk state</span>
+                        <strong id="desk-state">Awake</strong>
+                    </div>
+                    <div class="instrument">
+                        <span>Route mood</span>
+                        <strong id="route-mood">Watchful</strong>
+                    </div>
+                    <div class="instrument">
+                        <span>Dockets</span>
+                        <strong id="docket-count">05 open</strong>
+                    </div>
+                    <div class="instrument">
+                        <span>Signal</span>
+                        <strong id="signal-state">Clean noise</strong>
+                    </div>
                 </div>
                 <div class="badge-row">
                     <span class="badge">LAN-coordinated</span>
@@ -1007,7 +1135,29 @@
                     <span class="badge">Maritime-adjacent</span>
                     <span class="badge">Public-safe chaos</span>
                 </div>
+                <div class="live-wire">
+                    <p id="live-wire-text">00:17 bureau time / chart lamp hot / first useful thing wins</p>
+                </div>
             </aside>
+        </section>
+
+        <section class="ops-ribbon" aria-label="Current bureau operating picture">
+            <div>
+                <span>Active candidate</span>
+                <strong>Expedition Bureau public v2</strong>
+            </div>
+            <div>
+                <span>Primary product</span>
+                <strong>Route briefs</strong>
+            </div>
+            <div>
+                <span>Useful surface</span>
+                <strong>Copyable dockets</strong>
+            </div>
+            <div>
+                <span>Next frontier</span>
+                <strong>Live signals</strong>
+            </div>
         </section>
 
         <section class="process-strip" aria-label="Bureau flow">
@@ -1592,6 +1742,49 @@
     </div>
 
     <script>
+        const bureauTelemetry = [
+            {
+                desk: "Awake",
+                route: "Watchful",
+                docket: "05 open",
+                signal: "Clean noise",
+                wire: "00:17 bureau time / chart lamp hot / first useful thing wins"
+            },
+            {
+                desk: "Plotting",
+                route: "Window forming",
+                docket: "07 open",
+                signal: "Harbor ping",
+                wire: "00:23 bureau time / fuel assumptions under review / optimism held at the door"
+            },
+            {
+                desk: "Filed",
+                route: "Caution",
+                docket: "03 hot",
+                signal: "Pattern found",
+                wire: "00:31 bureau time / one route, two alternates, zero patience for vague dock notes"
+            },
+            {
+                desk: "Scanning",
+                route: "Northbound",
+                docket: "11 open",
+                signal: "Low glow",
+                wire: "00:44 bureau time / signal cartography saw something and is pretending to be normal"
+            }
+        ];
+
+        let telemetryIndex = 0;
+
+        function updateHeroTelemetry() {
+            telemetryIndex = (telemetryIndex + 1) % bureauTelemetry.length;
+            const telemetry = bureauTelemetry[telemetryIndex];
+            document.getElementById("desk-state").textContent = telemetry.desk;
+            document.getElementById("route-mood").textContent = telemetry.route;
+            document.getElementById("docket-count").textContent = telemetry.docket;
+            document.getElementById("signal-state").textContent = telemetry.signal;
+            document.getElementById("live-wire-text").textContent = telemetry.wire;
+        }
+
         const operations = [
             "Transom Whisper",
             "Harbor Coup",
@@ -2329,6 +2522,7 @@
         buildPassageBrief();
         updateReadinessBoard();
         buildSignalBulletin();
+        window.setInterval(updateHeroTelemetry, 4200);
     </script>
 </body>
 </html>
