@@ -7,14 +7,14 @@
     <meta name="description" content="Wilhelm and Gunther run an expedition bureau for route briefs, weird dispatches, and public-safe maritime nonsense with occasional usefulness.">
     <meta property="og:title" content="The Wilhelm Experience | Expedition Bureau">
     <meta property="og:description" content="A maritime-flavored public lab for route briefs, dispatch dockets, departure checks, and signal oddities.">
-    <meta property="og:image" content="https://thewilhelmexperience.com/assets/bureau-chart-table.png">
+    <meta property="og:image" content="https://thewilhelmexperience.com/assets/openclaw-crew-wide.webp">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://thewilhelmexperience.com/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="The Wilhelm Experience | Expedition Bureau">
     <meta name="twitter:description" content="A working expedition bureau for route intelligence, dispatch theater, and useful weirdness.">
-    <meta name="twitter:image" content="https://thewilhelmexperience.com/assets/bureau-chart-table.png">
-    <link rel="preload" as="image" href="assets/bureau-chart-table.png">
+    <meta name="twitter:image" content="https://thewilhelmexperience.com/assets/openclaw-crew-wide.webp">
+    <link rel="preload" as="image" href="assets/openclaw-crew-wide.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -31,6 +31,7 @@
             --sea: #5fe3ff;
             --signal: #ff8f3f;
             --alert: #ffe36f;
+            --brass: #d8b36a;
             --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
         }
 
@@ -114,7 +115,7 @@
         .hero {
             position: relative;
             display: grid;
-            grid-template-columns: 1.35fr 0.95fr;
+            grid-template-columns: 1.05fr 0.95fr;
             gap: 2rem;
             min-height: min(760px, calc(100vh - 5rem));
             margin-top: 0.5rem;
@@ -124,9 +125,9 @@
             border-radius: 8px;
             overflow: hidden;
             background:
-                linear-gradient(90deg, rgba(3, 9, 13, 0.92), rgba(3, 9, 13, 0.62) 43%, rgba(3, 9, 13, 0.24) 68%),
-                linear-gradient(180deg, rgba(3, 9, 13, 0.14), rgba(3, 9, 13, 0.92)),
-                url("assets/bureau-chart-table.png") center / cover no-repeat;
+                linear-gradient(90deg, rgba(3, 9, 13, 0.9), rgba(3, 9, 13, 0.58) 40%, rgba(3, 9, 13, 0.3) 72%),
+                linear-gradient(180deg, rgba(3, 9, 13, 0.12), rgba(3, 9, 13, 0.9)),
+                url("assets/openclaw-crew-wide.webp") center / cover no-repeat;
             box-shadow: 0 40px 120px rgba(0, 0, 0, 0.42);
         }
 
@@ -242,6 +243,30 @@
         .hero-card > * {
             position: relative;
             z-index: 1;
+        }
+
+        .crew-plaque {
+            margin-bottom: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(216, 179, 106, 0.34);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.22);
+        }
+
+        .crew-plaque img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1.55;
+            object-fit: cover;
+            object-position: center 34%;
+        }
+
+        .crew-plaque figcaption {
+            padding: 0.75rem 0.9rem;
+            color: var(--brass);
+            font-size: 0.76rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
         }
 
         .duo {
@@ -390,6 +415,76 @@
             color: var(--muted);
             line-height: 1.6;
             font-size: 0.9rem;
+        }
+
+        .agent-watch {
+            display: grid;
+            grid-template-columns: minmax(16rem, 0.9fr) minmax(0, 1.1fr);
+            gap: 1rem;
+            align-items: stretch;
+            margin-bottom: 1.5rem;
+        }
+
+        .agent-portrait,
+        .agent-copy {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--panel);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            overflow: hidden;
+        }
+
+        .agent-portrait img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            min-height: 24rem;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .agent-copy {
+            display: grid;
+            align-content: center;
+            gap: 1rem;
+            padding: clamp(1.35rem, 3vw, 2rem);
+            background:
+                linear-gradient(145deg, rgba(216, 179, 106, 0.08), rgba(95, 227, 255, 0.05)),
+                var(--panel-strong);
+        }
+
+        .agent-copy p {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .agent-splits {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.85rem;
+        }
+
+        .agent-split {
+            border: 1px solid rgba(216, 179, 106, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.16);
+        }
+
+        .agent-split strong {
+            display: block;
+            color: var(--brass);
+            margin-bottom: 0.45rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-size: 0.82rem;
+        }
+
+        .agent-split span {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 0.92rem;
         }
 
         .ticker {
@@ -1073,7 +1168,9 @@
             .wire-grid,
             .future,
             .packet-summary,
-            .ops-ribbon {
+            .ops-ribbon,
+            .agent-watch,
+            .agent-splits {
                 grid-template-columns: 1fr;
             }
 
@@ -1093,6 +1190,7 @@
                 padding-top: 2.4rem;
                 min-height: auto;
                 padding: 1.4rem;
+                background-position: 42% center;
             }
 
             .topbar {
@@ -1106,6 +1204,11 @@
 
             .hero-instruments {
                 grid-template-columns: 1fr;
+            }
+
+            .agent-portrait img {
+                min-height: auto;
+                aspect-ratio: 1;
             }
         }
     </style>
@@ -1142,6 +1245,10 @@
             </div>
 
             <aside class="hero-card">
+                <figure class="crew-plaque">
+                    <img src="assets/openclaw-crew-badge.webp" alt="Wilhelm and Gunther OpenClaw bureau avatars">
+                    <figcaption>OpenClaw field agents / Wilhelm + Gunther</figcaption>
+                </figure>
                 <div class="duo">
                     <article class="duo-card">
                         <strong>Wilhelm / Front Desk</strong>
@@ -1213,6 +1320,29 @@
             <article class="process-step">
                 <strong>03 / Carry it forward</strong>
                 <p>Copy the docket, refine the wording, or let the next Wilhelm + Gunther pass turn it into a sharper tool.</p>
+            </article>
+        </section>
+
+        <section class="section agent-watch" aria-label="OpenClaw agent watch">
+            <figure class="agent-portrait">
+                <img src="assets/openclaw-crew-badge.webp" alt="Wilhelm and Gunther standing back to back under the OpenClaw mark">
+            </figure>
+            <article class="agent-copy">
+                <div class="manifesto-label">Agent Watch</div>
+                <h2>Two Desks. One Flag.</h2>
+                <p>
+                    The Bureau works better when it has faces. Wilhelm carries the loud public signal; Gunther keeps the benches wired, the route math visible, and the handoff packet sharp enough to survive daylight.
+                </p>
+                <div class="agent-splits">
+                    <div class="agent-split">
+                        <strong>Wilhelm</strong>
+                        <span>Front-office charm, bright-feathered confidence, and the pressure to make the strange parts memorable.</span>
+                    </div>
+                    <div class="agent-split">
+                        <strong>Gunther</strong>
+                        <span>Route-bench discipline, checklist teeth, and a stubborn preference for artifacts that actually work.</span>
+                    </div>
+                </div>
             </article>
         </section>
 
