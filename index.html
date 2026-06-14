@@ -1293,6 +1293,7 @@
                         <div class="route-actions">
                             <button class="button primary" id="route-button" type="button">Draft Specimen</button>
                             <button class="button" id="route-random-button" type="button">Randomize Inputs</button>
+                            <button class="button" id="route-copy-button" type="button">Copy Specimen</button>
                         </div>
                     </article>
 
@@ -1320,6 +1321,7 @@
                             <span class="status-pill">Specimen only / not live routing</span>
                             <span class="status-pill" id="route-confidence">Bureau confidence: steady mischief</span>
                         </div>
+                        <div class="copy-status" id="route-copy-status" aria-live="polite"></div>
                     </article>
                 </div>
             </div>
@@ -2110,6 +2112,7 @@
             document.getElementById("route-spine").textContent = `${profileSpine} ${waterSpine}`;
             document.getElementById("route-close").textContent = close;
             document.getElementById("route-confidence").textContent = waterMoods[water].confidence;
+            document.getElementById("route-copy-status").textContent = "";
         }
 
         function randomizeRouteInputs() {
@@ -2128,8 +2131,29 @@
             buildRouteSpecimen();
         }
 
+        function currentRouteText() {
+            return [
+                "ROUTE-TWE-SPECIMEN",
+                `Departure posture: ${document.getElementById("route-posture").textContent}`,
+                `First call: ${document.getElementById("route-call").textContent}`,
+                `Route spine: ${document.getElementById("route-spine").textContent}`,
+                `Closing instruction: ${document.getElementById("route-close").textContent}`,
+                document.getElementById("route-confidence").textContent,
+                "Rule: Specimen only. Verify live weather, charts, fuel, daylight, notices, and local knowledge before departure."
+            ].join("\n");
+        }
+
+        async function copyRouteSpecimen() {
+            await copyText(
+                currentRouteText(),
+                document.getElementById("route-copy-status"),
+                "Route specimen copied."
+            );
+        }
+
         document.getElementById("route-button").addEventListener("click", buildRouteSpecimen);
         document.getElementById("route-random-button").addEventListener("click", randomizeRouteInputs);
+        document.getElementById("route-copy-button").addEventListener("click", copyRouteSpecimen);
 
         function docketId() {
             const now = new Date();
