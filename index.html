@@ -1754,6 +1754,7 @@
                 <div class="route-actions">
                     <button class="button primary" id="packet-refresh-button" type="button">Refresh Packet</button>
                     <button class="button" id="packet-copy-button" type="button">Copy Packet</button>
+                    <button class="button" id="packet-download-button" type="button">Download Packet</button>
                 </div>
                 <div class="packet-output" id="packet-output" aria-live="polite"></div>
                 <div class="copy-status" id="packet-copy-status" aria-live="polite"></div>
@@ -2667,6 +2668,26 @@
             );
         }
 
+        function packetFilename() {
+            const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+            return `twe-bureau-packet-${stamp}.txt`;
+        }
+
+        function downloadBureauPacket() {
+            buildBureauPacket();
+            const packetText = currentPacketText();
+            const blob = new Blob([packetText], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = packetFilename();
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+            document.getElementById("packet-copy-status").textContent = "Bureau packet downloaded.";
+        }
+
         document.getElementById("passage-button").addEventListener("click", buildPassageBrief);
         document.getElementById("passage-copy-button").addEventListener("click", copyPassageBrief);
         document.querySelectorAll(".readiness-check").forEach((check) => {
@@ -2679,6 +2700,7 @@
         document.getElementById("signal-copy-button").addEventListener("click", copySignalBulletin);
         document.getElementById("packet-refresh-button").addEventListener("click", buildBureauPacket);
         document.getElementById("packet-copy-button").addEventListener("click", copyBureauPacket);
+        document.getElementById("packet-download-button").addEventListener("click", downloadBureauPacket);
         wirePassageInputs();
         buildPassageBrief();
         updateReadinessBoard();
